@@ -1,0 +1,147 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import MediaSlot from '../ui/MediaSlot.astro';
+---
+
+<section class="trabajos section" aria-labelledby="trabajos-title">
+  <div class="trabajos__inner">
+    <Kicker>Trabajos</Kicker>
+    <h2 id="trabajos-title" class="trabajos__title">
+      Contenido que <span class="accent">trabaja</span> por tu negocio.
+    </h2>
+    <div class="trabajos__grid">
+      <figure class="trabajos__reel">
+        <MediaSlot label="Reel — producto local">
+          <img
+            class="trabajos__img"
+            src="/assets/reel-producto-local.png"
+            alt="Reel de contenido para redes: producto local"
+            width="336"
+            height="480"
+            loading="lazy"
+          />
+          <span class="trabajos__play" aria-hidden="true">▶</span>
+        </MediaSlot>
+        <figcaption class="trabajos__label">Reel — producto local</figcaption>
+      </figure>
+      <figure class="trabajos__reel">
+        <MediaSlot label="Reel — turismo rural">
+          <img
+            class="trabajos__img"
+            src="/assets/reel-turismo-rural.png"
+            alt="Reel de contenido para redes: turismo rural"
+            width="336"
+            height="480"
+            loading="lazy"
+          />
+          <span class="trabajos__play" aria-hidden="true">▶</span>
+        </MediaSlot>
+        <figcaption class="trabajos__label">Reel — turismo rural</figcaption>
+      </figure>
+      <figure class="trabajos__reel">
+        <MediaSlot label="Reel — detrás de escena">
+          <img
+            class="trabajos__img"
+            src="/assets/reel-detras-escena.png"
+            alt="Reel de contenido para redes: detrás de escena"
+            width="336"
+            height="480"
+            loading="lazy"
+          />
+          <span class="trabajos__play" aria-hidden="true">▶</span>
+        </MediaSlot>
+        <figcaption class="trabajos__label">Reel — detrás de escena</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .trabajos {
+    padding-block: var(--space-section-y);
+  }
+
+  .trabajos__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .trabajos__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .trabajos__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .trabajos__reel {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .trabajos__reel :global(.media-slot) {
+    position: relative;
+    border-radius: 20px;
+  }
+
+  .trabajos__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .trabajos__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+    background: var(--color-base-white);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    pointer-events: none;
+  }
+
+  :global([data-theme="dark"]) .trabajos__play {
+    background: #f0ebe2;
+  }
+
+  .trabajos__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  @media (max-width: 809px) {
+    .trabajos__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .trabajos__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .trabajos__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

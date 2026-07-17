@@ -1,0 +1,144 @@
+---
+import Kicker from '../ui/Kicker.astro';
+---
+
+<section class="equipo section" aria-labelledby="equipo-title">
+  <div class="equipo__inner">
+    <Kicker>Equipo</Kicker>
+    <h2 id="equipo-title" class="equipo__title">
+      Personas <span class="accent">reales</span> detrás de tu proyecto.
+    </h2>
+    <div class="equipo__grid">
+      <figure class="equipo__member">
+        <div class="equipo__photo">
+          <img
+            src="/assets/foto-emilia.png"
+            alt="Retrato de Emilia, estrategia y UX en Netiza"
+            width="341"
+            height="420"
+            loading="lazy"
+          />
+        </div>
+        <figcaption>
+          <p class="equipo__name">Emilia</p>
+          <p class="equipo__role">Estrategia y UX</p>
+        </figcaption>
+      </figure>
+      <figure class="equipo__member">
+        <div class="equipo__photo">
+          <img
+            src="/assets/foto-pamela.png"
+            alt="Retrato de Pamela, negocio y e-commerce en Netiza"
+            width="341"
+            height="420"
+            loading="lazy"
+          />
+        </div>
+        <figcaption>
+          <p class="equipo__name">Pamela</p>
+          <p class="equipo__role">Negocio y e-commerce</p>
+        </figcaption>
+      </figure>
+      <figure class="equipo__member">
+        <div class="equipo__photo">
+          <img
+            src="/assets/foto-alejandro.png"
+            alt="Retrato de Alejandro, tecnología e IA en Netiza"
+            width="341"
+            height="420"
+            loading="lazy"
+          />
+        </div>
+        <figcaption>
+          <p class="equipo__name">Alejandro</p>
+          <p class="equipo__role">Tecnología e IA</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .equipo {
+    padding-block: var(--space-section-y);
+  }
+
+  .equipo__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .equipo__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .equipo__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .equipo__member {
+    margin: 0;
+  }
+
+  .equipo__photo {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    aspect-ratio: 341 / 420;
+    background: var(--media-bg);
+    margin-bottom: var(--space-4);
+  }
+
+  .equipo__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .equipo__name {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1);
+    letter-spacing: -0.05em;
+  }
+
+  .equipo__role {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  @media (max-width: 809px) {
+    .equipo__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .equipo__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .equipo__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+
+    .equipo__photo {
+      aspect-ratio: 342 / 340;
+    }
+
+    .equipo__name {
+      font-size: var(--font-size-lg);
+      letter-spacing: -0.04em;
+    }
+  }
+</style>

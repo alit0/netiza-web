@@ -1,0 +1,167 @@
+---
+import Kicker from '../ui/Kicker.astro';
+---
+
+<section class="compare section" aria-labelledby="compare-title">
+  <div class="compare__inner">
+    <Kicker>Con quién trabajamos</Kicker>
+    <h2 id="compare-title" class="compare__title">
+      No vendemos magia. Trabajamos <span class="accent">en serio</span>.
+    </h2>
+    <div class="compare__grid">
+      <article class="compare__card compare__card--no">
+        <h3 class="compare__card-title">La fórmula de turno</h3>
+        <ul class="compare__list" aria-label="Lo que no hacemos">
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--no" aria-label="No incluido">✕</span>
+            <span class="compare__text">Sitios sin estrategia ni mensaje claro</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--no" aria-label="No incluido">✕</span>
+            <span class="compare__text">Paquetes cerrados que no se adaptan a tu negocio</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--no" aria-label="No incluido">✕</span>
+            <span class="compare__text">Soluciones genéricas copiadas de otro rubro</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--no" aria-label="No incluido">✕</span>
+            <span class="compare__text">Tecnología o IA metida sin criterio ni necesidad</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--no" aria-label="No incluido">✕</span>
+            <span class="compare__text">Promesas de resultados inmediatos o garantizados</span>
+          </li>
+        </ul>
+      </article>
+      <article class="compare__card compare__card--yes">
+        <h3 class="compare__card-title">Netiza</h3>
+        <ul class="compare__list" aria-label="Cómo trabajamos en Netiza">
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--yes" aria-label="Incluido">✓</span>
+            <span class="compare__text">Estrategia antes que herramienta: diagnóstico + propuesta a medida</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--yes" aria-label="Incluido">✓</span>
+            <span class="compare__text">Proyectos armados según tu etapa, no desde una lista fija</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--yes" aria-label="Incluido">✓</span>
+            <span class="compare__text">Soluciones pensadas para tu negocio, tu sector y tu público</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--yes" aria-label="Incluido">✓</span>
+            <span class="compare__text">IA solo donde ahorra tiempo o mejora procesos reales</span>
+          </li>
+          <li class="compare__row">
+            <span class="compare__icon compare__icon--yes" aria-label="Incluido">✓</span>
+            <span class="compare__text">Honestidad: te decimos qué sí, qué no y por qué</span>
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compare {
+    padding-block: var(--space-section-y);
+  }
+
+  .compare__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .compare__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .compare__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .compare__card {
+    padding: var(--space-8);
+    border-radius: 24px;
+    background: var(--card-bg);
+  }
+
+  .compare__card-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6);
+  }
+
+  .compare__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .compare__row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .compare__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .compare__icon--no {
+    background: color-mix(in srgb, var(--color-text-primary) 18%, transparent);
+    color: var(--color-text-secondary);
+  }
+
+  .compare__icon--yes {
+    background: var(--color-text-primary);
+    color: var(--color-bg-canvas);
+  }
+
+  .compare__text {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 809px) {
+    .compare__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .compare__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .compare__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .compare__card {
+      border-radius: 20px;
+    }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import Kicker from '../ui/Kicker.astro';
+---
+
+<section class="raices section" aria-labelledby="raices-title">
+  <div class="raices__inner">
+    <article class="raices__card">
+      <Kicker>Raíces digitales</Kicker>
+      <h2 id="raices-title" class="raices__title">
+        Raíces digitales para negocios <span class="accent">reales</span>.
+      </h2>
+      <div class="raices__body">
+        <p>No creemos en soluciones prefabricadas. Cada negocio tiene su historia, su territorio y su gente. Nuestro trabajo es traducir eso al lenguaje digital sin perder lo que lo hace único.</p>
+        <p>Trabajamos con pymes y marcas que ya funcionan bien en lo suyo pero necesitan que lo digital refleje la misma calidad. No venimos a reemplazar lo que hacen bien: venimos a potenciarlo con orden, criterio y las herramientas justas.</p>
+        <p>La tecnología y la inteligencia artificial entran solo cuando suman de verdad. Para nosotros, las raíces digitales no son un discurso: son la forma en que construimos cada proyecto, desde Mercedes al resto del país.</p>
+      </div>
+      <img
+        class="raices__logo"
+        src="/assets/logo-netiza-dark.svg"
+        alt="Netiza"
+        width="117"
+        height="22"
+        loading="lazy"
+      />
+    </article>
+  </div>
+</section>
+
+<style>
+  .raices {
+    padding-block: var(--space-section-y);
+  }
+
+  .raices__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .raices__card {
+    max-width: 640px;
+    padding: var(--space-16) var(--space-12);
+    border-radius: 24px;
+    background: var(--card-bg);
+    text-align: center;
+  }
+
+  .raices__title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-8);
+  }
+
+  .raices__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .raices__body p {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .raices__logo {
+    display: block;
+    width: auto;
+    height: var(--logo-height);
+    margin: 0 auto;
+  }
+
+  :global([data-theme="dark"]) .raices__logo {
+    filter: invert(1);
+  }
+
+  @media (max-width: 809px) {
+    .raices__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .raices__card {
+      max-width: 100%;
+      padding: var(--space-8) var(--space-6);
+      border-radius: 20px;
+    }
+
+    .raices__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+  }
+</style>
