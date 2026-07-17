@@ -1,0 +1,91 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import Card from '../ui/Card.astro';
+---
+
+<section class="problem section" aria-labelledby="problema-title">
+  <div class="problem__inner">
+    <Kicker>El problema</Kicker>
+    <h2 id="problema-title" class="problem__title">
+      Lo bueno no se vende solo. Primero tiene que <span class="accent">verse claro</span>.
+    </h2>
+    <div class="problem__grid">
+      <Card>
+        <h3 class="card__title">Tu web y redes te achican</h3>
+        <p class="card__desc">Online no se nota la calidad real de lo que hacés.</p>
+      </Card>
+      <Card>
+        <h3 class="card__title">Te comparan y deciden en segundos</h3>
+        <p class="card__desc">Si no queda claro qué ofrecés, el cliente sigue de largo.</p>
+      </Card>
+      <Card>
+        <h3 class="card__title">Hacés mucho, pero sin rumbo</h3>
+        <p class="card__desc">Publicar más o sumar herramientas no arregla nada si falta criterio.</p>
+      </Card>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem {
+    padding-block: var(--space-section-y);
+  }
+
+  .problem__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .problem__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .problem__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+  }
+
+  .card__desc {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .problem__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .problem__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .problem__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+  }
+</style>

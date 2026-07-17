@@ -1,0 +1,49 @@
+---
+import Logo from '../ui/Logo.astro';
+import Button from '../ui/Button.astro';
+import ThemeToggle from '../ui/ThemeToggle.astro';
+import { WHATSAPP_URL } from '../../data/links';
+---
+
+<header class="navbar">
+  <nav class="navbar__inner">
+    <Logo href="#top" />
+    <div class="navbar__actions">
+      <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+        WhatsApp
+      </Button>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-bg-canvas);
+    border-bottom: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  .navbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1072px;
+    margin: 0 auto;
+    padding: var(--space-4) 0;
+  }
+
+  .navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 809px) {
+    .navbar__inner {
+      padding: var(--space-4) var(--space-6);
+    }
+  }
+</style>

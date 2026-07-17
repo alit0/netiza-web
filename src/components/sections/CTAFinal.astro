@@ -1,0 +1,91 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import Button from '../ui/Button.astro';
+import { WHATSAPP_URL } from '../../data/links';
+---
+
+<section class="cta-final section" aria-labelledby="cta-title">
+  <div class="cta-final__inner">
+    <Kicker>El siguiente paso</Kicker>
+    <h2 id="cta-title" class="cta-final__title">
+      Contanos qué vende tu negocio. Nosotros te decimos por dónde empezar.
+    </h2>
+    <p class="cta-final__body">
+      Escribinos por WhatsApp y contanos qué hacés y qué te frena. Te respondemos con una mirada honesta, sin compromiso.
+    </p>
+    <div class="cta-final__actions">
+      <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+        Hablar sobre mi proyecto
+      </Button>
+      <span class="cta-final__microcopy">Cada proyecto según etapa, alcance y lo que buscás.</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    padding-block: var(--space-section-y);
+  }
+
+  .cta-final__inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    padding: var(--space-16) var(--space-8);
+    border-radius: var(--card-radius);
+    background: var(--card-bg);
+  }
+
+  .cta-final__title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-4);
+  }
+
+  .cta-final__body {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-width: 56ch;
+    margin: 0 auto var(--space-8);
+  }
+
+  .cta-final__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .cta-final__microcopy {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .cta-final__inner {
+      margin-inline: var(--space-6);
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .cta-final__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .cta-final__body {
+      font-size: var(--font-size-base);
+    }
+  }
+</style>

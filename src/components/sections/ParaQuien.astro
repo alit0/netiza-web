@@ -1,0 +1,105 @@
+---
+import Kicker from '../ui/Kicker.astro';
+---
+
+<section class="audience section" aria-labelledby="audience-title">
+  <div class="audience__inner">
+    <Kicker>Para quién</Kicker>
+    <h2 id="audience-title" class="audience__title">
+      Si tu negocio va bien pero online <span class="accent">quedó atrás</span>.
+    </h2>
+    <ul class="audience__pills" aria-label="Rubros para los que trabajamos">
+      <li class="audience__pill">Emprendimientos</li>
+      <li class="audience__pill">Empresas pequeñas</li>
+      <li class="audience__pill">Comercios</li>
+      <li class="audience__pill">Profesionales independientes</li>
+      <li class="audience__pill">Marcas en crecimiento</li>
+      <li class="audience__pill">Servicios locales y digitales</li>
+    </ul>
+    <p class="audience__body">
+      Si ya estás funcionando pero la web, las redes o los procesos digitales no acompañan, te ayudamos a ponerlo en serio sin proyectos gigantes ni cosas que no vas a usar. Estamos en Mercedes, Buenos Aires, y trabajamos con empresas de todo el país.
+    </p>
+    <blockquote class="audience__not">
+      <strong>Para quién NO es:</strong> no trabajamos con quien solo busca &laquo;un logo&raquo;, &laquo;una web rapidita&raquo; o la fórmula de turno. Trabajamos mejor con quien quiere ordenar y mejorar de verdad.
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .audience {
+    padding-block: var(--space-section-y);
+  }
+
+  .audience__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .audience__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .audience__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0 0 var(--space-8);
+    padding: 0;
+  }
+
+  .audience__pill {
+    display: inline-flex;
+    padding: var(--kicker-padding-block) var(--kicker-padding-inline);
+    border-radius: var(--kicker-radius);
+    background: var(--kicker-bg);
+    color: var(--kicker-text);
+    font-size: var(--kicker-font-size);
+    font-weight: var(--font-control-weight);
+  }
+
+  .audience__body {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-width: 64ch;
+    margin: 0 0 var(--space-8);
+  }
+
+  .audience__not {
+    margin: 0;
+    padding: var(--card-padding);
+    border-radius: var(--card-radius);
+    background: var(--card-bg);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .audience__not strong {
+    color: var(--color-text-primary);
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .audience__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .audience__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+  }
+</style>

@@ -1,0 +1,142 @@
+---
+import Kicker from '../ui/Kicker.astro';
+---
+
+<section class="faq section" aria-labelledby="faq-title">
+  <div class="faq__inner">
+    <Kicker>FAQ</Kicker>
+    <h2 id="faq-title" class="faq__title">
+      Preguntas <span class="accent">frecuentes</span>
+    </h2>
+    <div class="faq__list">
+      <details class="faq__item">
+        <summary class="faq__question">¿Qué hace Netiza exactamente?</summary>
+        <p class="faq__answer">Ayudamos a pymes y marcas en crecimiento a ordenar lo digital: estrategia, web, comunicación e IA cuando suma.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Tengo que tener una web para empezar?</summary>
+        <p class="faq__answer">No hace falta. Podemos empezar aunque no tengas web o tus redes estén desordenadas. Primero vemos qué necesitás.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Trabajan solo con negocios de Mercedes o Buenos Aires?</summary>
+        <p class="faq__answer">No. Estamos en Mercedes (BA) pero trabajamos con empresas de todo el país, a distancia.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Hacen solo sitios web?</summary>
+        <p class="faq__answer">No solo eso. A veces la web entra; otras veces conviene antes estrategia, mensajes, comunicación, automatizaciones o IA.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Pueden integrar inteligencia artificial en mi empresa?</summary>
+        <p class="faq__answer">Sí, donde tenga sentido: tareas repetitivas, atención, contenidos, ordenar info, procesos. No la metemos por moda.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Cuánto cuesta trabajar con Netiza?</summary>
+        <p class="faq__answer">Depende del alcance. Primero entendemos tu caso y después te pasamos una propuesta clara.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Cuánto tarda un proyecto?</summary>
+        <p class="faq__answer">Depende. Una landing, una estrategia, una web o una integración con IA no llevan lo mismo. Lo acordamos antes de arrancar.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__question">¿Garantizan más ventas?</summary>
+        <p class="faq__answer">No. No vendemos magia. Lo que sí hacemos es que tu negocio se entienda mejor y genere más confianza cuando te buscan.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--space-section-y);
+  }
+
+  .faq__inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .faq__title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-12);
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq__item {
+    border-bottom: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  .faq__item:first-child {
+    border-top: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  .faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-6) 0;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    min-height: var(--size-touch);
+  }
+
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__question::after {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    transition: transform var(--motion-control) ease;
+  }
+
+  .faq__item[open] .faq__question::after {
+    transform: rotate(45deg);
+  }
+
+  .faq__answer {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6);
+    max-width: 60ch;
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .faq__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .faq__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+  }
+</style>

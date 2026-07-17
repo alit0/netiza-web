@@ -1,0 +1,135 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+import { WHATSAPP_URL } from '../../data/links';
+---
+
+<section id="que-hacemos" class="services section" aria-labelledby="services-title">
+  <div class="services__inner">
+    <header class="services__header">
+      <Kicker>Qué hacemos</Kicker>
+      <h2 id="services-title" class="services__title">
+        Que tu negocio se vea <span class="accent">en serio</span> cuando alguien lo busca.
+      </h2>
+      <p class="services__lead">
+        No arrancamos instalando de todo ni siguiendo modas. Primero vemos en qué etapa estás y qué tiene sentido hacer ahora.
+      </p>
+    </header>
+    <div class="services__grid">
+      <Card>
+        <h3 class="card__title">Posicionamiento y estrategia de marca</h3>
+        <p class="card__desc">Cómo querés que te vean, a quién le hablás y qué tiene que quedar claro en dos minutos.</p>
+      </Card>
+      <Card>
+        <h3 class="card__title">Sitios web y landings</h3>
+        <p class="card__desc">Webs y landings claras, para que la gente entienda y te escriba.</p>
+      </Card>
+      <Card>
+        <h3 class="card__title">Presencia digital y comunicación</h3>
+        <p class="card__desc">Redes, Google, WhatsApp, textos y diseño: que todo diga lo mismo.</p>
+      </Card>
+      <Card>
+        <h3 class="card__title">Inteligencia artificial aplicada</h3>
+        <p class="card__desc">IA donde de verdad ahorra tiempo: responder consultas, armar presupuestos, ordenar información, automatizar lo repetitivo. Sin humo.</p>
+      </Card>
+    </div>
+    <footer class="services__footer">
+      <p class="services__closing">Cada proyecto se arma según tu etapa y lo que buscás.</p>
+      <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+        Hablar sobre mi proyecto
+      </Button>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-block: var(--space-section-y);
+  }
+
+  .services__inner {
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .services__header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+
+  .services__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-4);
+  }
+
+  .services__lead {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-width: 56ch;
+    margin: 0 auto;
+  }
+
+  .services__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+
+  .services__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .services__closing {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+  }
+
+  .card__desc {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .services__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .services__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .services__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+  }
+</style>

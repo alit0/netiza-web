@@ -1,0 +1,143 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import Button from '../ui/Button.astro';
+import MediaSlot from '../ui/MediaSlot.astro';
+import { WHATSAPP_URL } from '../../data/links';
+---
+
+<section class="hero section" aria-labelledby="hero-title">
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <Kicker>Estrategia digital, web e IA para empresas en crecimiento</Kicker>
+      <h1 id="hero-title" class="hero__title">
+        Tu negocio se ve más <span class="accent">chico</span> de lo que es.
+      </h1>
+      <p class="hero__lead">
+        Hacés las cosas bien, pero online no se nota. En Netiza ordenamos tu presencia digital para que te encuentren, entiendan qué hacés en dos minutos y te escriban con confianza.
+      </p>
+      <div class="hero__actions">
+        <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+          Hablar sobre mi proyecto
+        </Button>
+        <Button variant="ghost" href="#que-hacemos">
+          Ver qué hacemos
+        </Button>
+        <span class="hero__microcopy">Cada proyecto se cotiza según lo que necesitás.<br>Te respondemos dentro de las 24 hs. Sin compromiso.</span>
+      </div>
+    </div>
+    <div class="hero__media">
+      <MediaSlot label="Reel vertical de contenido producido por Netiza">
+        <video
+          class="hero__video"
+          src="/assets/hero-reel.mp4"
+          poster="/assets/hero-poster.webp"
+          width="342"
+          height="608"
+          fetchpriority="high"
+          playsinline
+          muted
+          loop
+          autoplay
+          aria-label="Reel de contenido producido por Netiza"
+        ></video>
+      </MediaSlot>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-section-y);
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 342px;
+    gap: var(--space-16);
+    align-items: center;
+    max-width: 1072px;
+    margin: 0 auto;
+  }
+
+  .hero__copy {
+    max-width: 60ch;
+  }
+
+  .hero__title {
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-4);
+  }
+
+  .hero__lead {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-8);
+    max-width: 56ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .hero__microcopy {
+    display: block;
+    width: 100%;
+    margin-top: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .hero__media {
+    max-width: 342px;
+  }
+
+  .hero__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .accent {
+    font-family: var(--font-display-accent);
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 809px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      padding-inline: var(--space-6);
+    }
+
+    .hero__title {
+      font-size: var(--font-size-3xl);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+    }
+
+    .hero__lead {
+      font-size: var(--font-size-base);
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero__media {
+      max-width: 100%;
+    }
+  }
+</style>

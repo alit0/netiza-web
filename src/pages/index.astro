@@ -1,22 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Hero from '../components/sections/Hero.astro';
+import QueHacemos from '../components/sections/QueHacemos.astro';
+import ElProblema from '../components/sections/ElProblema.astro';
+import ParaQuien from '../components/sections/ParaQuien.astro';
+import Metodo from '../components/sections/Metodo.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import CTAFinal from '../components/sections/CTAFinal.astro';
+import Footer from '../components/sections/Footer.astro';
 ---
 
 <BaseLayout>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header id="navbar" data-section="navbar"></header>
+  <Navbar />
   <main id="contenido" tabindex="-1">
-    <section id="hero" data-section="hero"></section>
-    <section id="que-hacemos" data-section="services"></section>
-    <section id="trabajos" data-section="work"></section>
-    <section id="el-problema" data-section="problem"></section>
-    <section id="para-quien" data-section="audience"></section>
-    <section id="metodo" data-section="method"></section>
-    <section id="raices-digitales" data-section="digital-roots"></section>
-    <section id="con-quien-trabajamos" data-section="clients"></section>
-    <section id="equipo" data-section="team"></section>
-    <section id="faq" data-section="faq"></section>
-    <section id="cta-final" data-section="final-cta"></section>
+    <Hero />
+    <QueHacemos />
+    <ElProblema />
+    <ParaQuien />
+    <Metodo />
+    <FAQ />
+    <CTAFinal />
   </main>
-  <footer id="footer" data-section="footer"></footer>
+  <Footer />
 </BaseLayout>
