@@ -1,0 +1,8 @@
+# netiza.com.ar — robots
+# Landing estatica. Objetivo de conversion: consultas por WhatsApp (wa.me/5492324533126).
+# No hay rutas privadas ni area de clientes: todo indexable.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://netiza.com.ar/sitemap.xml
