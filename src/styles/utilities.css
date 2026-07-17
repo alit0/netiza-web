@@ -29,3 +29,15 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
+
+/* --- Scroll reveal (progressive enhancement; gated by .js-reveal set in <head>) --- */
+.js-reveal main > section:not(:first-child) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.js-reveal main > section:not(:first-child).is-visible {
+  opacity: 1;
+  transform: none;
+}
