@@ -1,0 +1,71 @@
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch between light and dark mode"
+  aria-pressed="false"
+>
+  <span class="theme-toggle__sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__moon" aria-hidden="true">☾</span>
+</button>
+
+<script>
+  const storageKey = 'netiza-theme';
+  const toggles = document.querySelectorAll<HTMLButtonElement>('.theme-toggle');
+
+  const syncToggles = (theme: 'light' | 'dark') => {
+    toggles.forEach((toggle) => {
+      toggle.setAttribute('aria-pressed', String(theme === 'dark'));
+    });
+  };
+
+  const applyTheme = (theme: 'light' | 'dark') => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    syncToggles(theme);
+  };
+
+  const currentTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  syncToggles(currentTheme);
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch {
+        // Theme still applies for the current page when storage is unavailable.
+      }
+    });
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    width: var(--theme-toggle-size);
+    min-width: var(--theme-toggle-size);
+    height: var(--theme-toggle-size);
+    place-items: center;
+    padding: 0;
+    border: var(--border-width) solid var(--theme-toggle-border);
+    border-radius: var(--theme-toggle-radius);
+    background: var(--theme-toggle-bg);
+    color: var(--theme-toggle-text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .theme-toggle__sun {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .theme-toggle__sun {
+    display: inline;
+  }
+
+  :global([data-theme="dark"]) .theme-toggle__moon {
+    display: none;
+  }
+</style>

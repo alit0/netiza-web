@@ -1,0 +1,27 @@
+---
+interface Props {
+  label?: string;
+  ratio?: string;
+  class?: string;
+}
+
+const { label, ratio = '9 / 16', class: className } = Astro.props;
+---
+
+<div
+  class:list={['media-slot', className]}
+  style={`--media-slot-ratio: ${ratio}`}
+  role={label ? 'group' : undefined}
+  aria-label={label}
+>
+  <slot />
+</div>
+
+<style>
+  .media-slot {
+    overflow: hidden;
+    aspect-ratio: var(--media-slot-ratio);
+    border-radius: var(--media-radius);
+    background: var(--media-bg);
+  }
+</style>

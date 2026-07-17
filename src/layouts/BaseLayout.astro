@@ -1,0 +1,204 @@
+---
+import '../styles/tokens.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'Estrategia digital, web e IA para pymes | Netiza, Mercedes BA',
+  description = 'Ayudamos a pymes y marcas en crecimiento a verse profesionales online. Estrategia, web e IA desde Mercedes, Buenos Aires, para todo el país. Escribinos.',
+  canonical = 'https://netiza.com.ar/',
+} = Astro.props;
+
+const image = 'https://netiza.com.ar/assets/og-image.png';
+
+const professionalService = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Netiza',
+  description: 'Estrategia digital, web e IA aplicada para pymes y marcas en crecimiento.',
+  url: canonical,
+  image,
+  logo: 'https://netiza.com.ar/assets/netiza-logo.svg',
+  telephone: '+54 9 2324 533126',
+  sameAs: ['https://wa.me/5492324533126'],
+  priceRange: '$$',
+  areaServed: 'Argentina',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Mercedes',
+    addressRegion: 'Buenos Aires',
+    addressCountry: 'AR',
+  },
+};
+
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Qué hace Netiza exactamente?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ayudamos a pymes y marcas en crecimiento a ordenar lo digital: estrategia, web, comunicación e IA cuando suma.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Tengo que tener una web para empezar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No hace falta. Podemos empezar aunque no tengas web o tus redes estén desordenadas. Primero vemos qué necesitás.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Trabajan solo con negocios de Mercedes o Buenos Aires?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Estamos en Mercedes (BA) pero trabajamos con empresas de todo el país, a distancia.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Hacen solo sitios web?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No solo eso. A veces la web entra; otras veces conviene antes estrategia, mensajes, comunicación, automatizaciones o IA.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Pueden integrar inteligencia artificial en mi empresa?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sí, donde tenga sentido: tareas repetitivas, atención, contenidos, ordenar info, procesos. No la metemos por moda.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto cuesta trabajar con Netiza?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Depende del alcance. Primero entendemos tu caso y después te pasamos una propuesta clara.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto tarda un proyecto?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Depende. Una landing, una estrategia, una web o una integración con IA no llevan lo mismo. Lo acordamos antes de arrancar.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Garantizan más ventas?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. No vendemos magia. Lo que sí hacemos es que tu negocio se entienda mejor y genere más confianza cuando te buscan.',
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es" data-theme="light">
+  <head>
+    <script is:inline>
+      (() => {
+        const fallback = 'light';
+
+        try {
+          const stored = localStorage.getItem('netiza-theme');
+          const preferred = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : fallback;
+          const theme = stored === 'light' || stored === 'dark' ? stored : preferred;
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = theme;
+        } catch {
+          document.documentElement.dataset.theme = fallback;
+          document.documentElement.style.colorScheme = fallback;
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="https://netiza.com.ar/assets/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Source+Serif+4:ital,wght@1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Netiza: estrategia digital, web e IA para empresas en crecimiento"
+    />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(professionalService)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    scroll-padding-top: var(--size-touch);
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--space-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>

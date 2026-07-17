@@ -1,0 +1,167 @@
+/* Tier 1: primitives */
+:root {
+  --color-base-ink: #232323;
+  --color-base-ink-light: #EFEAE1;
+  --color-base-paper-light: #EFEBE5;
+  --color-base-paper-dark: #161412;
+  --color-base-surface-light: #F7F2EA;
+  --color-base-surface-dark: #211E1A;
+  --color-base-sand-light: #E7D7C1;
+  --color-base-sand-dark: #2C2620;
+  --color-base-accent: #F15A24;
+  --color-base-accent-strong: #C2410C;
+  --color-base-white: #FFFFFF;
+
+  --font-family-sans: "Inter", sans-serif;
+  --font-family-serif: "Source Serif 4", serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-3xl: 2.5rem;
+  --font-size-4xl: 2.875rem;
+  --font-size-5xl: 3.5rem;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-full: 999rem;
+  --size-touch: 2.75rem;
+  --size-logo-height: 1.625rem;
+  --size-border: 0.0625rem;
+  --size-focus-ring: 0.1875rem;
+  --duration-fast: 160ms;
+}
+
+/* Tier 2: semantic */
+:root,
+[data-theme="light"] {
+  --color-bg-canvas: var(--color-base-paper-light);
+  --color-bg-surface: var(--color-base-surface-light);
+  --color-bg-sunken: var(--color-base-sand-light);
+  --color-text-primary: var(--color-base-ink);
+  --color-text-secondary: color-mix(in srgb, var(--color-base-ink) 72%, transparent);
+  --color-text-muted: color-mix(in srgb, var(--color-base-ink) 60%, transparent);
+  --color-border-subtle: color-mix(in srgb, var(--color-base-ink) 4%, transparent);
+  --color-accent: var(--color-base-accent);
+  --color-on-accent: var(--color-base-white);
+  --color-action-primary-bg: var(--color-base-accent-strong);
+  --color-action-primary-text: var(--color-base-white);
+  --color-action-ghost-bg: transparent;
+  --color-action-ghost-text: var(--color-base-ink);
+  --color-action-ghost-border: color-mix(in srgb, var(--color-base-ink) 24%, transparent);
+  --color-focus-ring: var(--color-base-accent-strong);
+
+  --font-body: var(--font-family-sans);
+  --font-display-accent: var(--font-family-serif);
+  --font-control-size: var(--font-size-sm);
+  --font-kicker-size: var(--font-size-sm);
+  --font-control-weight: var(--font-weight-semibold);
+  --space-control-block: var(--space-4);
+  --space-control-inline: var(--space-7);
+  --space-card: var(--space-7);
+  --space-kicker-block: var(--space-2);
+  --space-kicker-inline: var(--space-3);
+  --space-section-y: var(--space-16);
+  --radius-control: var(--radius-full);
+  --radius-card: var(--radius-md);
+  --radius-media: var(--radius-lg);
+  --radius-kicker: var(--radius-full);
+  --size-control-min: var(--size-touch);
+  --size-brand: var(--size-logo-height);
+  --size-stroke: var(--size-border);
+  --size-focus: var(--size-focus-ring);
+  --motion-control: var(--duration-fast);
+}
+
+[data-theme="dark"] {
+  --color-bg-canvas: var(--color-base-paper-dark);
+  --color-bg-surface: var(--color-base-surface-dark);
+  --color-bg-sunken: var(--color-base-sand-dark);
+  --color-text-primary: var(--color-base-ink-light);
+  --color-text-secondary: color-mix(in srgb, var(--color-base-ink-light) 72%, transparent);
+  --color-text-muted: color-mix(in srgb, var(--color-base-ink-light) 60%, transparent);
+  --color-border-subtle: color-mix(in srgb, var(--color-base-ink-light) 6%, transparent);
+  --color-accent: var(--color-base-accent);
+  --color-on-accent: var(--color-base-white);
+  --color-action-primary-bg: var(--color-base-accent-strong);
+  --color-action-primary-text: var(--color-base-white);
+  --color-action-ghost-bg: transparent;
+  --color-action-ghost-text: var(--color-base-ink-light);
+  --color-action-ghost-border: color-mix(in srgb, var(--color-base-ink-light) 28%, transparent);
+  --color-focus-ring: var(--color-base-accent);
+
+  --font-body: var(--font-family-sans);
+  --font-display-accent: var(--font-family-serif);
+  --font-control-size: var(--font-size-sm);
+  --font-kicker-size: var(--font-size-sm);
+  --font-control-weight: var(--font-weight-semibold);
+  --space-control-block: var(--space-4);
+  --space-control-inline: var(--space-7);
+  --space-card: var(--space-7);
+  --space-kicker-block: var(--space-2);
+  --space-kicker-inline: var(--space-3);
+  --space-section-y: var(--space-16);
+  --radius-control: var(--radius-full);
+  --radius-card: var(--radius-md);
+  --radius-media: var(--radius-lg);
+  --radius-kicker: var(--radius-full);
+  --size-control-min: var(--size-touch);
+  --size-brand: var(--size-logo-height);
+  --size-stroke: var(--size-border);
+  --size-focus: var(--size-focus-ring);
+  --motion-control: var(--duration-fast);
+}
+
+/* Tier 3: components */
+:root {
+  --button-primary-bg: var(--color-action-primary-bg);
+  --button-primary-text: var(--color-action-primary-text);
+  --button-ghost-bg: var(--color-action-ghost-bg);
+  --button-ghost-text: var(--color-action-ghost-text);
+  --button-ghost-border: var(--color-action-ghost-border);
+  --button-padding-block: var(--space-control-block);
+  --button-padding-inline: var(--space-control-inline);
+  --button-radius: var(--radius-control);
+  --button-min-size: var(--size-control-min);
+  --button-font-size: var(--font-control-size);
+  --button-font-weight: var(--font-control-weight);
+  --button-transition: var(--motion-control);
+  --card-bg: var(--color-bg-surface);
+  --card-text: var(--color-text-primary);
+  --card-padding: var(--space-card);
+  --card-radius: var(--radius-card);
+  --kicker-bg: var(--color-bg-sunken);
+  --kicker-text: var(--color-text-primary);
+  --kicker-padding-block: var(--space-kicker-block);
+  --kicker-padding-inline: var(--space-kicker-inline);
+  --kicker-radius: var(--radius-kicker);
+  --kicker-font-size: var(--font-kicker-size);
+  --media-bg: var(--color-bg-sunken);
+  --media-radius: var(--radius-media);
+  --theme-toggle-bg: var(--color-action-ghost-bg);
+  --theme-toggle-text: var(--color-action-ghost-text);
+  --theme-toggle-border: var(--color-action-ghost-border);
+  --theme-toggle-size: var(--size-control-min);
+  --theme-toggle-radius: var(--radius-control);
+  --logo-height: var(--size-brand);
+  --focus-ring-color: var(--color-focus-ring);
+  --focus-ring-width: var(--size-focus);
+  --border-width: var(--size-stroke);
+}

@@ -1,0 +1,90 @@
+---
+interface Props {
+  variant?: 'primary' | 'ghost';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  target?: string;
+  rel?: string;
+  class?: string;
+  disabled?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  target,
+  rel,
+  class: className,
+  disabled = false,
+  ariaLabel,
+} = Astro.props;
+---
+
+{
+  href ? (
+    <a
+      class:list={['button', `button--${variant}`, className]}
+      href={href}
+      target={target}
+      rel={rel}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      class:list={['button', `button--${variant}`, className]}
+      type={type}
+      disabled={disabled}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: var(--button-min-size);
+    align-items: center;
+    justify-content: center;
+    padding: var(--button-padding-block) var(--button-padding-inline);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--button-radius);
+    font: var(--button-font-weight) var(--button-font-size) / 1 var(--font-body);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      filter var(--button-transition) ease,
+      transform var(--button-transition) ease;
+  }
+
+  .button--primary {
+    border-color: var(--button-primary-bg);
+    background: var(--button-primary-bg);
+    color: var(--button-primary-text);
+  }
+
+  .button--ghost {
+    border-color: var(--button-ghost-border);
+    background: var(--button-ghost-bg);
+    color: var(--button-ghost-text);
+  }
+
+  .button:hover {
+    filter: brightness(0.92);
+  }
+
+  .button:active {
+    transform: translateY(var(--border-width));
+  }
+
+  .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+</style>

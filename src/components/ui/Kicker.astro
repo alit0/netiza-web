@@ -1,0 +1,24 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<p class:list={['kicker', className]}>
+  <slot />
+</p>
+
+<style>
+  .kicker {
+    display: inline-flex;
+    margin: 0;
+    padding: var(--kicker-padding-block) var(--kicker-padding-inline);
+    border-radius: var(--kicker-radius);
+    background: var(--kicker-bg);
+    color: var(--kicker-text);
+    font-size: var(--kicker-font-size);
+    font-weight: var(--font-control-weight);
+  }
+</style>
