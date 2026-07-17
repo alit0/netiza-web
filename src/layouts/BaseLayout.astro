@@ -175,7 +175,8 @@ const faqPage = {
     background: var(--color-bg-canvas);
     color: var(--color-text-primary);
     font-family: var(--font-body);
-    scroll-padding-top: var(--size-touch);
+    scroll-padding-top: calc(var(--size-touch) + var(--space-6));
+    scroll-behavior: smooth;
   }
 
   body {

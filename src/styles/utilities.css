@@ -31,13 +31,71 @@
 }
 
 /* --- Scroll reveal (progressive enhancement; gated by .js-reveal set in <head>) --- */
+/* Emphasized ease-out curve for a premium settle. */
+.js-reveal {
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Section container fades + rises as one block. */
 .js-reveal main > section:not(:first-child) {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s var(--ease-emphasized),
+    transform 0.6s var(--ease-emphasized);
 }
 
 .js-reveal main > section:not(:first-child).is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* Stagger: grid/step children slide up in sequence WITHIN the revealed section.
+   Transform-only (no opacity) so it never double-fades against the section fade. */
+.js-reveal
+  main
+  > section:not(:first-child)
+  :is(
+    .services__grid,
+    .problem__grid,
+    .method__steps,
+    .equipo__grid,
+    .trabajos__grid,
+    .compare__grid
+  )
+  > * {
+  transform: translateY(22px);
+  transition: transform 0.7s var(--ease-emphasized);
+}
+
+.js-reveal main > section:not(:first-child).is-visible :is(
+    .services__grid,
+    .problem__grid,
+    .method__steps,
+    .equipo__grid,
+    .trabajos__grid,
+    .compare__grid
+  )
+  > * {
+  transform: none;
+}
+
+/* Stagger delays — applied to the grid children in order. */
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(1) { transition-delay: 0.06s; }
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(2) { transition-delay: 0.13s; }
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(3) { transition-delay: 0.20s; }
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(4) { transition-delay: 0.27s; }
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(5) { transition-delay: 0.34s; }
+.js-reveal main > section.is-visible :is(.services__grid, .problem__grid, .method__steps, .equipo__grid, .trabajos__grid, .compare__grid) > *:nth-child(6) { transition-delay: 0.41s; }
+
+/* --- Hover-lift on interactive cards (box-shadow only, isolated from the
+   transform-based stagger above so there is no transition-delay conflict) --- */
+@media (hover: hover) {
+  :is(.services__grid, .problem__grid, .compare__grid, .trabajos__grid) > * {
+    transition: box-shadow 0.25s ease;
+  }
+
+  :is(.services__grid, .problem__grid, .compare__grid, .trabajos__grid) > *:hover {
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--color-base-ink) 14%, transparent);
+  }
 }
