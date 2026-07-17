@@ -10,7 +10,7 @@ interface Props {
 const { href = '/', class: className } = Astro.props;
 ---
 
-<a class:list={['logo', className]} href={href} aria-label="Netiza — go to homepage">
+<a class:list={['logo', className]} href={href} aria-label="Netiza — ir al inicio">
   <img class="logo__light-theme" src={darkLogo.src} alt="" width="139" height="26" />
   <img class="logo__dark-theme" src={lightLogo.src} alt="" width="139" height="26" />
 </a>

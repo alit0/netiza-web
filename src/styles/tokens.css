@@ -57,7 +57,7 @@
   --color-bg-sunken: var(--color-base-sand-light);
   --color-text-primary: var(--color-base-ink);
   --color-text-secondary: color-mix(in srgb, var(--color-base-ink) 72%, transparent);
-  --color-text-muted: color-mix(in srgb, var(--color-base-ink) 60%, transparent);
+  --color-text-muted: color-mix(in srgb, var(--color-base-ink) 68%, transparent);
   --color-border-subtle: color-mix(in srgb, var(--color-base-ink) 4%, transparent);
   --color-accent: var(--color-base-accent);
   --color-on-accent: var(--color-base-white);

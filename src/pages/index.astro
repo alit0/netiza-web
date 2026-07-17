@@ -3,8 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header id="navbar" data-section="navbar"></header>
-  <main>
+  <main id="contenido" tabindex="-1">
     <section id="hero" data-section="hero"></section>
     <section id="que-hacemos" data-section="services"></section>
     <section id="trabajos" data-section="work"></section>
