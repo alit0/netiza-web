@@ -5,4 +5,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://netiza.com.ar/sitemap.xml
+Sitemap: https://netiza.com.ar/sitemap-index.xml
