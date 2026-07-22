@@ -12,43 +12,43 @@ import MediaSlot from '../ui/MediaSlot.astro';
     <div class="trabajos__grid">
       <figure class="trabajos__reel">
         <MediaSlot label="Reel — producto local">
-          <img
-            class="trabajos__img"
-            src="/assets/reel-producto-local.webp"
-            alt="Reel de contenido para redes: producto local"
+          <video
+            class="trabajos__video"
+            src="/assets/producto.mp4"
+            poster="/assets/producto-poster.webp"
             width="336"
             height="480"
-            loading="lazy" decoding="async"
-          />
-          <span class="trabajos__play" aria-hidden="true">▶</span>
+            muted playsinline loop preload="none"
+            aria-hidden="true"
+          ></video>
         </MediaSlot>
         <figcaption class="trabajos__label">Reel — producto local</figcaption>
       </figure>
       <figure class="trabajos__reel">
         <MediaSlot label="Reel — turismo rural">
-          <img
-            class="trabajos__img"
-            src="/assets/reel-turismo-rural.webp"
-            alt="Reel de contenido para redes: turismo rural"
+          <video
+            class="trabajos__video"
+            src="/assets/turismo-rural.mp4"
+            poster="/assets/turismo-rural-poster.webp"
             width="336"
             height="480"
-            loading="lazy" decoding="async"
-          />
-          <span class="trabajos__play" aria-hidden="true">▶</span>
+            muted playsinline loop preload="none"
+            aria-hidden="true"
+          ></video>
         </MediaSlot>
         <figcaption class="trabajos__label">Reel — turismo rural</figcaption>
       </figure>
       <figure class="trabajos__reel">
         <MediaSlot label="Reel — detrás de escena">
-          <img
-            class="trabajos__img"
-            src="/assets/reel-detras-escena.webp"
-            alt="Reel de contenido para redes: detrás de escena"
+          <video
+            class="trabajos__video"
+            src="/assets/detras-escena.mp4"
+            poster="/assets/detras-escena-poster.webp"
             width="336"
             height="480"
-            loading="lazy" decoding="async"
-          />
-          <span class="trabajos__play" aria-hidden="true">▶</span>
+            muted playsinline loop preload="none"
+            aria-hidden="true"
+          ></video>
         </MediaSlot>
         <figcaption class="trabajos__label">Reel — detrás de escena</figcaption>
       </figure>
@@ -93,32 +93,11 @@ import MediaSlot from '../ui/MediaSlot.astro';
     border-radius: 20px;
   }
 
-  .trabajos__img {
+  .trabajos__video {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .trabajos__play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: var(--radius-full);
-    background: var(--color-base-white);
-    color: var(--color-text-primary);
-    font-size: var(--font-size-lg);
-    pointer-events: none;
-  }
-
-  :global([data-theme="dark"]) .trabajos__play {
-    background: #f0ebe2;
   }
 
   .trabajos__label {
@@ -145,3 +124,29 @@ import MediaSlot from '../ui/MediaSlot.astro';
     }
   }
 </style>
+
+<script>
+  const videos = document.querySelectorAll<HTMLVideoElement>('.trabajos__video');
+
+  if (videos.length) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target as HTMLVideoElement;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.25, rootMargin: '0px 0px 15% 0px' }
+      );
+
+      videos.forEach((video) => observer.observe(video));
+    }
+  }
+</script>

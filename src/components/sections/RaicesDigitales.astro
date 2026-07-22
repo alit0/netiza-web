@@ -28,7 +28,11 @@ import Kicker from '../ui/Kicker.astro';
 
 <style>
   .raices {
+    position: relative;
     padding-block: var(--space-section-y);
+    background-image: url('/assets/bg-raices-digitales.webp');
+    background-size: cover;
+    background-position: center;
   }
 
   .raices__inner {
@@ -42,7 +46,7 @@ import Kicker from '../ui/Kicker.astro';
     max-width: 640px;
     padding: var(--space-16) var(--space-12);
     border-radius: 24px;
-    background: var(--card-bg);
+    background: color-mix(in srgb, var(--card-bg) 60%, transparent);
     text-align: center;
   }
 
@@ -65,7 +69,7 @@ import Kicker from '../ui/Kicker.astro';
   .raices__body p {
     font-size: var(--font-size-base);
     line-height: 1.5;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     margin: 0;
   }
 

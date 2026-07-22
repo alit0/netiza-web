@@ -24,7 +24,11 @@ import { WHATSAPP_URL } from '../../data/links';
 
 <style>
   .cta-final {
+    position: relative;
     padding-block: var(--space-section-y);
+    background-image: url('/assets/bg-siguiente-paso.webp');
+    background-size: cover;
+    background-position: center;
   }
 
   .cta-final__inner {
@@ -33,7 +37,7 @@ import { WHATSAPP_URL } from '../../data/links';
     text-align: center;
     padding: var(--space-16) var(--space-8);
     border-radius: var(--card-radius);
-    background: var(--card-bg);
+    background: color-mix(in srgb, var(--card-bg) 60%, transparent);
   }
 
   .cta-final__title {
@@ -48,7 +52,7 @@ import { WHATSAPP_URL } from '../../data/links';
   .cta-final__body {
     font-size: var(--font-size-md);
     line-height: 1.5;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     max-width: 56ch;
     margin: 0 auto var(--space-8);
   }
