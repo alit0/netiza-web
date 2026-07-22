@@ -30,12 +30,23 @@ import Kicker from '../ui/Kicker.astro';
   .raices {
     position: relative;
     padding-block: var(--space-section-y);
+    overflow: hidden;
+  }
+
+  /* Background lives in a pseudo-element so it can be filtered;
+     negative inset compensates for blur edge bleed. */
+  .raices::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
     background-image: url('/assets/bg-raices-digitales.webp');
     background-size: cover;
     background-position: center;
+    filter: blur(5px) brightness(0.75);
   }
 
   .raices__inner {
+    position: relative;
     max-width: 1072px;
     margin: 0 auto;
     display: flex;
