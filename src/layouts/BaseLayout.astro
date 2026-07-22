@@ -111,6 +111,8 @@ const faqPage = {
 <!doctype html>
 <html lang="es" data-theme="light">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JVL2NEB5B8"></script>
     <script is:inline>
@@ -141,12 +143,12 @@ const faqPage = {
         }
       })();
     </script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <!-- LCP: first hero slide poster paints before the video loads -->
+    <link rel="preload" as="image" href="/assets/slide1-poster.webp" fetchpriority="high" />
     <link rel="icon" href="https://netiza.com.ar/assets/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

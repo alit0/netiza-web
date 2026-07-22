@@ -164,28 +164,41 @@ import { WHATSAPP_URL } from '../../data/links';
   .hero__dots {
     position: absolute;
     top: 50%;
-    right: var(--space-3);
+    right: 0;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
     transform: translateY(-50%);
   }
 
+  /* 24x24 hit area per touch-target guidelines; the visible dot
+     is the 8px ::before. */
   .hero__dot {
-    width: 8px;
-    height: 8px;
+    position: relative;
+    width: 24px;
+    height: 24px;
     padding: 0;
     border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .hero__dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
     border-radius: var(--radius-full);
     background: color-mix(in srgb, var(--color-base-white) 45%, transparent);
-    cursor: pointer;
+    transform: translate(-50%, -50%);
     transition: background 0.2s ease, transform 0.2s ease;
   }
 
-  .hero__dot[aria-current='true'] {
+  .hero__dot[aria-current='true']::before {
     background: var(--color-base-white);
-    transform: scale(1.15);
+    transform: translate(-50%, -50%) scale(1.15);
   }
 
   @media (max-width: 809px) {
