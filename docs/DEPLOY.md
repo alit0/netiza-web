@@ -82,6 +82,37 @@ desde hPanel. Detalle en Engram: `deploy/hostinger-mcp-attempt`.
 - **Posters**: frame a ~0.5s exportado a WebP q80.
 - **Imágenes**: WebP, contenido 900px q82, fondos de sección 1600px q80.
 
+## Trucos y trampas del hosting (aprendidos a los golpes)
+
+### Borrar archivos del servidor sin SSH ni hPanel
+
+Se puede con un **cron job temporal** vía MCP (`hosting_createAccountCronJobV1`),
+pero con tres reglas:
+
+1. **Sin shell**: Hostinger ejecuta el cron con `timeout <comando>` directo — no hay
+   shell. Los builtins (`cd`), los globs (`*.zip`) y las comillas NO funcionan
+   (`sh -c '...'` pierde las comillas al guardarse). Usar solo binarios reales
+   (`rm`, `find`) con **rutas absolutas y literales**.
+2. **Límite de 255 caracteres** por comando — partir en varios crons si no entra.
+3. **Borrar el cron después** (`hosting_deleteAccountCronJobV1`) y verificar con
+   `hosting_getCronJobOutputV1` que corrió sin error — un cron fallando en silencio
+   cada minuto no avisa.
+
+### El CDN puede "revivir" archivos borrados
+
+Tras borrar un archivo del disco, el CDN de Hostinger (`hcdn`) puede seguir
+sirviéndolo desde cache (verificar con `curl -sI ... | grep x-hcdn-cache-status`;
+`HIT` = viene del cache). Con nuestro `Cache-Control` de 7 días, un huérfano
+"borrado" puede vivir una semana más. Solución: purgar con
+`hosting_clearWebsiteCacheV1` y re-verificar hasta ver el 404.
+
+### El deploy por MCP deja el zip en la raíz pública
+
+Los intentos con `hosting_deployStaticWebsite` subieron el zip a `public_html/`
+— **públicamente descargable** — aunque la extracción falle con 500. Si se
+reintenta ese camino, verificar después que no quede `https://netiza.com.ar/<zip>`
+respondiendo 200, y borrarlo si quedó.
+
 ## Analítica
 
 - GA4 (`G-JVL2NEB5B8`) y Microsoft Clarity, ambos en `BaseLayout.astro`.
