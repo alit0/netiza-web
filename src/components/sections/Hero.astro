@@ -27,14 +27,45 @@ import { WHATSAPP_URL } from '../../data/links';
     </div>
     <div class="hero__media">
       <MediaSlot label="Reel vertical de contenido producido por Netiza">
-        <img
-          class="hero__video"
-          src="/assets/hero-reel.webp"
-          width="342"
-          height="608"
-          fetchpriority="high" decoding="async"
-          alt="Reel de contenido producido por Netiza"
-        />
+        <div class="hero__slider">
+          <div class="hero__track">
+            <video
+              class="hero__video"
+              src="/assets/slide1.mp4"
+              poster="/assets/slide1-poster.webp"
+              width="342"
+              height="608"
+              muted playsinline loop preload="metadata"
+              aria-hidden="true"
+            ></video>
+            <video
+              class="hero__video"
+              src="/assets/slide2.mp4"
+              poster="/assets/slide2-poster.webp"
+              width="342"
+              height="608"
+              muted playsinline loop preload="none"
+              aria-hidden="true"
+            ></video>
+            <video
+              class="hero__video"
+              src="/assets/slide3.mp4"
+              poster="/assets/slide3-poster.webp"
+              width="342"
+              height="608"
+              muted playsinline loop preload="none"
+              aria-hidden="true"
+            ></video>
+          </div>
+          <p class="hero__overlay-title" aria-hidden="true">
+            <span class="hero__overlay-text">Tu negocio se ve más <span class="accent">chico</span> de lo que es.</span>
+          </p>
+          <div class="hero__dots" role="group" aria-label="Selector de reel">
+            <button class="hero__dot" type="button" data-slide="0" aria-label="Ver reel 1" aria-current="true"></button>
+            <button class="hero__dot" type="button" data-slide="1" aria-label="Ver reel 2" aria-current="false"></button>
+            <button class="hero__dot" type="button" data-slide="2" aria-label="Ver reel 3" aria-current="false"></button>
+          </div>
+        </div>
       </MediaSlot>
     </div>
   </div>
@@ -96,11 +127,65 @@ import { WHATSAPP_URL } from '../../data/links';
     max-width: 342px;
   }
 
+  .hero__slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .hero__track {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    transform: translateY(calc(var(--slide-index, 0) * -100%));
+    transition: transform 600ms ease;
+  }
+
   .hero__video {
     display: block;
+    flex: 0 0 100%;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .hero__overlay-title {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__track {
+      transition: none;
+    }
+  }
+
+  .hero__dots {
+    position: absolute;
+    top: 50%;
+    right: var(--space-3);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    transform: translateY(-50%);
+  }
+
+  .hero__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-base-white) 45%, transparent);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .hero__dot[aria-current='true'] {
+    background: var(--color-base-white);
+    transform: scale(1.15);
   }
 
   @media (max-width: 809px) {
@@ -110,10 +195,18 @@ import { WHATSAPP_URL } from '../../data/links';
       padding-inline: var(--space-6);
     }
 
+    /* Keep the real h1 in the accessibility tree; the visual title
+       is the decorative overlay on top of the video. */
     .hero__title {
-      font-size: var(--font-size-3xl);
-      line-height: 1.08;
-      letter-spacing: -0.05em;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     .hero__lead {
@@ -126,7 +219,113 @@ import { WHATSAPP_URL } from '../../data/links';
     }
 
     .hero__media {
+      order: -1;
       max-width: 100%;
+    }
+
+    /* Direct aspect-ratio override: MediaSlot sets its ratio variable via
+       inline style, which would win over any stylesheet variable override. */
+    .hero__media :global(.media-slot) {
+      aspect-ratio: 342 / 440;
+    }
+
+    .hero__overlay-title {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0 var(--space-6);
+      font-size: clamp(2.125rem, 10.2vw, 2.5rem);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.06;
+      letter-spacing: -0.048em;
+      color: var(--color-base-paper-light);
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+      pointer-events: none;
     }
   }
 </style>
+
+<script>
+  const slider = document.querySelector<HTMLDivElement>('.hero__slider');
+  const track = document.querySelector<HTMLDivElement>('.hero__track');
+  const videos = document.querySelectorAll<HTMLVideoElement>('.hero__video');
+  const dots = document.querySelectorAll<HTMLButtonElement>('.hero__dot');
+
+  if (slider && track && videos.length) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SLIDE_INTERVAL_MS = 6000;
+
+    let activeIndex = 0;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    let isVisible = true;
+
+    const setActive = (index: number) => {
+      activeIndex = index;
+      track.style.setProperty('--slide-index', String(index));
+
+      videos.forEach((video, i) => {
+        dots[i]?.setAttribute('aria-current', String(i === index));
+
+        if (i === index) {
+          if (!prefersReducedMotion) {
+            video.play().catch(() => {});
+          }
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const goToNext = () => {
+      setActive((activeIndex + 1) % videos.length);
+    };
+
+    const startInterval = () => {
+      if (prefersReducedMotion || intervalId !== null) return;
+      intervalId = setInterval(goToNext, SLIDE_INTERVAL_MS);
+    };
+
+    const stopInterval = () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        setActive(i);
+        stopInterval();
+        if (isVisible) startInterval();
+      });
+    });
+
+    if (prefersReducedMotion) {
+      // No auto-advance, no autoplay: freeze on the first slide's poster.
+      videos[0]?.pause();
+      setActive(0);
+    } else {
+      setActive(0);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isVisible = entry.isIntersecting;
+            if (isVisible) {
+              startInterval();
+              videos[activeIndex]?.play().catch(() => {});
+            } else {
+              stopInterval();
+              videos.forEach((video) => video.pause());
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(slider);
+    }
+  }
+</script>
