@@ -1,0 +1,212 @@
+---
+import Kicker from '../ui/Kicker.astro';
+import Button from '../ui/Button.astro';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
+
+// FormSubmit.co AJAX endpoint — sends submissions to the Netiza inbox.
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/netiza.team@gmail.com';
+const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
+---
+
+<section class="contacto section" aria-labelledby="contacto-title">
+  <div class="contacto__inner">
+    <Kicker>Contacto</Kicker>
+    <h2 id="contacto-title" class="contacto__title">¿Preferís dejarnos un mensaje?</h2>
+    <p class="contacto__body">
+      Completá el formulario y te respondemos por mail dentro de las 24 hs. Si querés algo más
+      rápido, escribinos por WhatsApp.
+    </p>
+
+    <form class="contacto__form" action={FORM_ENDPOINT} method="POST">
+      <div class="contacto__field">
+        <label class="contacto__label" for="contacto-nombre">Nombre</label>
+        <input
+          class="contacto__input"
+          id="contacto-nombre"
+          type="text"
+          name="nombre"
+          autocomplete="name"
+          required
+        />
+      </div>
+
+      <div class="contacto__field">
+        <label class="contacto__label" for="contacto-email">Email</label>
+        <input
+          class="contacto__input"
+          id="contacto-email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <div class="contacto__field">
+        <label class="contacto__label" for="contacto-mensaje">Mensaje</label>
+        <textarea
+          class="contacto__input contacto__textarea"
+          id="contacto-mensaje"
+          name="mensaje"
+          rows="4"
+          required></textarea>
+      </div>
+
+      {/* Honeypot — hidden from users; if filled, it's a bot. */}
+      <input class="contacto__honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <input type="hidden" name="_subject" value="Nuevo mensaje desde netiza.com.ar" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+
+      <Button type="submit">Enviar mensaje</Button>
+      <p class="contacto__status" role="status" aria-live="polite" data-fallback={whatsappFallback}></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contacto {
+    padding-block: var(--space-section-y);
+  }
+
+  .contacto__inner {
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contacto__title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: var(--space-6) 0 var(--space-4);
+  }
+
+  .contacto__body {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 auto var(--space-8);
+    max-width: 48ch;
+  }
+
+  .contacto__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    text-align: left;
+  }
+
+  .contacto__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contacto__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .contacto__input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font: inherit;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    background: var(--card-bg);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s ease;
+  }
+
+  .contacto__input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .contacto__textarea {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  .contacto__honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .contacto__status {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    min-height: 1.5em;
+  }
+
+  .contacto__status[data-state='ok'] {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .contacto__status[data-state='error'] {
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 809px) {
+    .contacto__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .contacto__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contacto__form');
+  const status = document.querySelector<HTMLParagraphElement>('.contacto__status');
+
+  if (form && status) {
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const fallbackUrl = status.dataset.fallback ?? '';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitBtn) submitBtn.disabled = true;
+      status.dataset.state = 'sending';
+      status.textContent = 'Enviando…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok && String(data.success) === 'true') {
+          form.reset();
+          status.dataset.state = 'ok';
+          status.textContent = '¡Gracias! Te respondemos dentro de las 24 hs.';
+        } else {
+          throw new Error('submit failed');
+        }
+      } catch {
+        status.dataset.state = 'error';
+        status.innerHTML =
+          'No pudimos enviar el mensaje. Escribinos por ' +
+          `<a href="${fallbackUrl}" target="_blank" rel="noopener">WhatsApp</a>.`;
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+</script>
