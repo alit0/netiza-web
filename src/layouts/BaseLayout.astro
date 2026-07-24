@@ -1,5 +1,6 @@
 ---
 import '../styles/tokens.css';
+import '../styles/fonts.css';
 import '../styles/utilities.css';
 import Analytics from '../components/Analytics.astro';
 
@@ -147,11 +148,14 @@ const faqPage = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Self-hosted fonts (see src/styles/fonts.css) — no render-blocking
+         third-party stylesheet. Preload the most-used weight for the LCP text. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Source+Serif+4:ital,wght@1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/inter-500-normal-latin.woff2"
+      crossorigin
     />
 
     <meta property="og:type" content="website" />
