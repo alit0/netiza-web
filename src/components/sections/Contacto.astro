@@ -19,7 +19,7 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
       rápido, escribinos por WhatsApp.
     </p>
 
-    <form class="contacto__form" action={FORM_ENDPOINT} method="POST">
+    <form class="contacto__form" action={FORM_ENDPOINT} method="POST" novalidate>
       <div class="contacto__field">
         <label class="contacto__label" for="contacto-nombre">Nombre</label>
         <input
@@ -28,8 +28,10 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
           type="text"
           name="nombre"
           autocomplete="name"
+          aria-describedby="contacto-nombre-error"
           required
         />
+        <span class="contacto__error" id="contacto-nombre-error" role="alert"></span>
       </div>
 
       <div class="contacto__field">
@@ -40,8 +42,11 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
           type="email"
           name="email"
           autocomplete="email"
+          inputmode="email"
+          aria-describedby="contacto-email-error"
           required
         />
+        <span class="contacto__error" id="contacto-email-error" role="alert"></span>
       </div>
 
       <div class="contacto__field">
@@ -51,7 +56,9 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
           id="contacto-mensaje"
           name="mensaje"
           rows="4"
+          aria-describedby="contacto-mensaje-error"
           required></textarea>
+        <span class="contacto__error" id="contacto-mensaje-error" role="alert"></span>
       </div>
 
       {/* Honeypot — hidden from users; if filled, it's a bot. */}
@@ -63,6 +70,22 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
       <Button type="submit">Enviar mensaje</Button>
       <p class="contacto__status" role="status" aria-live="polite" data-fallback={whatsappFallback}></p>
     </form>
+  </div>
+
+  {/* Success modal */}
+  <div class="contacto__modal" role="dialog" aria-modal="true" aria-labelledby="contacto-modal-title" hidden>
+    <div class="contacto__modal-backdrop" data-close></div>
+    <div class="contacto__modal-card">
+      <svg class="contacto__check" viewBox="0 0 52 52" aria-hidden="true">
+        <circle class="contacto__check-circle" cx="26" cy="26" r="24" />
+        <path class="contacto__check-mark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+      </svg>
+      <h3 id="contacto-modal-title" class="contacto__modal-title">¡Mensaje enviado!</h3>
+      <p class="contacto__modal-text">
+        Gracias por escribirnos. Te respondemos dentro de las 24 hs.
+      </p>
+      <button type="button" class="contacto__modal-close" data-close>Cerrar</button>
+    </div>
   </div>
 </section>
 
@@ -136,9 +159,20 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
   }
 
+  .contacto__input[aria-invalid='true'] {
+    border-color: var(--color-accent);
+  }
+
   .contacto__textarea {
     resize: vertical;
     min-height: 7rem;
+  }
+
+  .contacto__error {
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+    color: var(--color-accent);
+    min-height: 1em;
   }
 
   .contacto__honey {
@@ -154,15 +188,138 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
     font-size: var(--font-size-sm);
     line-height: 1.5;
     min-height: 1.5em;
-  }
-
-  .contacto__status[data-state='ok'] {
-    color: var(--color-accent);
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .contacto__status[data-state='error'] {
     color: var(--color-text-primary);
+  }
+
+  /* --- Success modal --- */
+  .contacto__modal[hidden] {
+    display: none;
+  }
+
+  .contacto__modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+  }
+
+  .contacto__modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-base-ink) 55%, transparent);
+    animation: contacto-fade 0.25s ease both;
+  }
+
+  .contacto__modal-card {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    padding: var(--space-12) var(--space-8);
+    text-align: center;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: 0 24px 60px color-mix(in srgb, var(--color-base-ink) 30%, transparent);
+    animation: contacto-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .contacto__check {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--space-4);
+    display: block;
+  }
+
+  .contacto__check-circle {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 3;
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: contacto-draw 0.5s ease-out 0.15s forwards;
+  }
+
+  .contacto__check-mark {
+    stroke: var(--color-accent);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: contacto-draw 0.3s ease-out 0.55s forwards;
+  }
+
+  .contacto__modal-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+  }
+
+  .contacto__modal-text {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-8);
+  }
+
+  .contacto__modal-close {
+    font: inherit;
+    font-size: var(--font-size-base);
+    font-weight: var(--button-font-weight);
+    color: var(--button-primary-text);
+    background: var(--button-primary-bg);
+    border: var(--border-width) solid var(--button-primary-bg);
+    border-radius: var(--button-radius);
+    padding: var(--button-padding-block) var(--button-padding-inline);
+    min-height: var(--button-min-size);
+    cursor: pointer;
+    transition: filter 0.2s ease;
+  }
+
+  .contacto__modal-close:hover {
+    filter: brightness(0.92);
+  }
+
+  @keyframes contacto-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes contacto-pop {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes contacto-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contacto__modal-backdrop,
+    .contacto__modal-card,
+    .contacto__check-circle,
+    .contacto__check-mark {
+      animation: none;
+    }
+
+    .contacto__check-circle,
+    .contacto__check-mark {
+      stroke-dashoffset: 0;
+    }
   }
 
   @media (max-width: 809px) {
@@ -181,15 +338,80 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
 <script>
   const form = document.querySelector<HTMLFormElement>('.contacto__form');
   const status = document.querySelector<HTMLParagraphElement>('.contacto__status');
+  const modal = document.querySelector<HTMLDivElement>('.contacto__modal');
 
-  if (form && status) {
+  if (form && status && modal) {
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const closeBtn = modal.querySelector<HTMLButtonElement>('.contacto__modal-close');
     const fallbackUrl = status.dataset.fallback ?? '';
+    let lastFocused: HTMLElement | null = null;
+
+    // Rigorous email format check: local@domain.tld with a real TLD.
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    const rules: Record<string, (value: string) => string | null> = {
+      nombre: (v) => (v.trim().length >= 2 ? null : 'Ingresá tu nombre.'),
+      email: (v) => (EMAIL_RE.test(v.trim()) ? null : 'Ingresá un email válido, por ejemplo nombre@dominio.com.'),
+      mensaje: (v) => (v.trim().length >= 10 ? null : 'Contanos un poco más (mínimo 10 caracteres).'),
+    };
+
+    const setError = (field: string, message: string | null) => {
+      const input = form.querySelector<HTMLElement>(`[name="${field}"]`);
+      const errorEl = document.getElementById(`contacto-${field}-error`);
+      if (!input || !errorEl) return;
+      errorEl.textContent = message ?? '';
+      input.setAttribute('aria-invalid', message ? 'true' : 'false');
+    };
+
+    // Clear a field's error as the user fixes it.
+    Object.keys(rules).forEach((field) => {
+      const input = form.querySelector<HTMLInputElement>(`[name="${field}"]`);
+      input?.addEventListener('input', () => {
+        if (input.getAttribute('aria-invalid') === 'true') {
+          setError(field, rules[field](input.value));
+        }
+      });
+    });
+
+    const validate = (): boolean => {
+      let firstInvalid: HTMLElement | null = null;
+      for (const field of Object.keys(rules)) {
+        const input = form.querySelector<HTMLInputElement>(`[name="${field}"]`);
+        if (!input) continue;
+        const message = rules[field](input.value);
+        setError(field, message);
+        if (message && !firstInvalid) firstInvalid = input;
+      }
+      firstInvalid?.focus();
+      return !firstInvalid;
+    };
+
+    const openModal = () => {
+      lastFocused = document.activeElement as HTMLElement;
+      modal.hidden = false;
+      document.addEventListener('keydown', onKeydown);
+      closeBtn?.focus();
+    };
+
+    const closeModal = () => {
+      modal.hidden = true;
+      document.removeEventListener('keydown', onKeydown);
+      lastFocused?.focus();
+    };
+
+    const onKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeModal();
+    };
+
+    modal.querySelectorAll('[data-close]').forEach((el) => {
+      el.addEventListener('click', closeModal);
+    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (!validate()) return;
+
       if (submitBtn) submitBtn.disabled = true;
-      status.dataset.state = 'sending';
       status.textContent = 'Enviando…';
 
       try {
@@ -202,13 +424,12 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
 
         if (response.ok && String(data.success) === 'true') {
           form.reset();
-          status.dataset.state = 'ok';
-          status.textContent = '¡Gracias! Te respondemos dentro de las 24 hs.';
+          status.textContent = '';
+          openModal();
         } else {
           throw new Error('submit failed');
         }
       } catch {
-        status.dataset.state = 'error';
         status.innerHTML =
           'No pudimos enviar el mensaje. Escribinos por ' +
           `<a href="${fallbackUrl}" target="_blank" rel="noopener">WhatsApp</a>.`;
