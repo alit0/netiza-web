@@ -2,7 +2,7 @@
 import Kicker from '../ui/Kicker.astro';
 import Card from '../ui/Card.astro';
 import Button from '../ui/Button.astro';
-import { WHATSAPP_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 ---
 
 <section id="que-hacemos" class="services section" aria-labelledby="services-title">
@@ -36,7 +36,7 @@ import { WHATSAPP_URL } from '../../data/links';
     </div>
     <footer class="services__footer">
       <p class="services__closing">Cada proyecto se arma según tu etapa y lo que buscás.</p>
-      <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+      <Button href={whatsappUrl(WHATSAPP_MESSAGES.servicios)} target="_blank" rel="noopener">
         Hablar sobre mi proyecto
       </Button>
     </footer>

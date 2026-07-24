@@ -1,7 +1,7 @@
 ---
 import Kicker from '../ui/Kicker.astro';
 import Button from '../ui/Button.astro';
-import { WHATSAPP_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 ---
 
 <section class="cta-final section" aria-labelledby="cta-title">
@@ -14,7 +14,7 @@ import { WHATSAPP_URL } from '../../data/links';
       Escribinos por WhatsApp y contanos qué hacés y qué te frena. Te respondemos con una mirada honesta, sin compromiso.
     </p>
     <div class="cta-final__actions">
-      <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+      <Button href={whatsappUrl(WHATSAPP_MESSAGES.cta)} target="_blank" rel="noopener">
         Hablar sobre mi proyecto
       </Button>
       <span class="cta-final__microcopy">Cada proyecto según etapa, alcance y lo que buscás.</span>

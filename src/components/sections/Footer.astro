@@ -1,6 +1,6 @@
 ---
 import Logo from '../ui/Logo.astro';
-import { WHATSAPP_URL, INSTAGRAM_URL, FACEBOOK_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES, INSTAGRAM_URL, FACEBOOK_URL } from '../../data/links';
 ---
 
 <footer class="footer">
@@ -10,7 +10,7 @@ import { WHATSAPP_URL, INSTAGRAM_URL, FACEBOOK_URL } from '../../data/links';
       <p class="footer__tagline">Estrategia digital, web e IA</p>
     </div>
     <p class="footer__location">Mercedes, Buenos Aires, Argentina · Trabajamos con empresas de todo el país</p>
-    <a class="footer__cta" href={WHATSAPP_URL} target="_blank" rel="noopener">
+    <a class="footer__cta" href={whatsappUrl(WHATSAPP_MESSAGES.footer)} target="_blank" rel="noopener">
       Escribinos por WhatsApp
     </a>
     <ul class="footer__social" aria-label="Redes sociales de Netiza">

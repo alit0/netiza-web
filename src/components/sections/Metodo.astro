@@ -1,7 +1,7 @@
 ---
 import Kicker from '../ui/Kicker.astro';
 import Button from '../ui/Button.astro';
-import { WHATSAPP_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 ---
 
 <section class="method section" aria-labelledby="method-title">
@@ -42,7 +42,7 @@ import { WHATSAPP_URL } from '../../data/links';
     </ol>
     <footer class="method__footer">
       <p class="method__closing">Sin paquetes cerrados ni precios de lista: te armamos una propuesta para lo que necesitás ahora, con un camino claro para lo que viene después.</p>
-      <Button variant="ghost" href={WHATSAPP_URL} target="_blank" rel="noopener">
+      <Button variant="ghost" href={whatsappUrl(WHATSAPP_MESSAGES.metodo)} target="_blank" rel="noopener">
         Hablar sobre mi proyecto
       </Button>
     </footer>

@@ -2,7 +2,7 @@
 import Kicker from '../ui/Kicker.astro';
 import Button from '../ui/Button.astro';
 import MediaSlot from '../ui/MediaSlot.astro';
-import { WHATSAPP_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 ---
 
 <section class="hero section" aria-labelledby="hero-title">
@@ -16,7 +16,7 @@ import { WHATSAPP_URL } from '../../data/links';
         Hacés las cosas bien, pero online no se nota. En Netiza ordenamos tu presencia digital para que te encuentren, entiendan qué hacés en dos minutos y te escriban con confianza.
       </p>
       <div class="hero__actions">
-        <Button href={WHATSAPP_URL} target="_blank" rel="noopener">
+        <Button href={whatsappUrl(WHATSAPP_MESSAGES.hero)} target="_blank" rel="noopener">
           Hablar sobre mi proyecto
         </Button>
         <Button variant="ghost" href="#que-hacemos">

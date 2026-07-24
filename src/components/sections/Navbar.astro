@@ -2,7 +2,7 @@
 import Logo from '../ui/Logo.astro';
 import Button from '../ui/Button.astro';
 import ThemeToggle from '../ui/ThemeToggle.astro';
-import { WHATSAPP_URL } from '../../data/links';
+import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 
 const links = [
   { label: 'Qué hacemos', href: '#que-hacemos' },
@@ -26,7 +26,7 @@ const links = [
         ))}
       </ul>
       <div class="navbar__menu-cta">
-        <Button href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp</Button>
+        <Button href={whatsappUrl(WHATSAPP_MESSAGES.navbar)} target="_blank" rel="noopener">WhatsApp</Button>
       </div>
     </div>
 
