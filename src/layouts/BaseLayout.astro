@@ -26,7 +26,6 @@ const professionalService = {
   image,
   logo: 'https://netiza.com.ar/assets/netiza-logo.svg',
   telephone: '+54 9 2324 533126',
-  sameAs: ['https://wa.me/5492324533126'],
   priceRange: '$$',
   areaServed: 'Argentina',
   address: {
@@ -34,6 +33,11 @@ const professionalService = {
     addressLocality: 'Mercedes',
     addressRegion: 'Buenos Aires',
     addressCountry: 'AR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -34.6534,
+    longitude: -59.4306,
   },
 };
 
@@ -110,7 +114,7 @@ const faqPage = {
 ---
 
 <!doctype html>
-<html lang="es" data-theme="light">
+<html lang="es-AR" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -140,7 +144,9 @@ const faqPage = {
     <link rel="canonical" href={canonical} />
     <!-- LCP: first hero slide poster paints before the video loads -->
     <link rel="preload" as="image" href="/assets/slide1-poster.webp" fetchpriority="high" />
-    <link rel="icon" href="https://netiza.com.ar/assets/favicon.png" type="image/png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
