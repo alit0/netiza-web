@@ -3,6 +3,7 @@ import '../styles/tokens.css';
 import '../styles/fonts.css';
 import '../styles/utilities.css';
 import Analytics from '../components/Analytics.astro';
+import { INSTAGRAM_URL, FACEBOOK_URL } from '../data/links';
 
 interface Props {
   title?: string;
@@ -29,10 +30,7 @@ const professionalService = {
   telephone: '+54 9 2324 533126',
   priceRange: '$$',
   areaServed: 'Argentina',
-  sameAs: [
-    'https://www.instagram.com/netiza.ar/',
-    'https://www.facebook.com/profile.php?id=61578894231398',
-  ],
+  sameAs: [INSTAGRAM_URL, FACEBOOK_URL],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
