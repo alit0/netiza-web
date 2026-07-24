@@ -4,7 +4,9 @@ import Button from '../ui/Button.astro';
 import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 
 // FormSubmit.co AJAX endpoint — sends submissions to the Netiza inbox.
-const FORM_ENDPOINT = 'https://formsubmit.co/ajax/netiza.team@gmail.com';
+// Uses FormSubmit's hashed alias (not the raw email) so the address is
+// never exposed in the page source.
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/7cd52732ca929d088a38947334da0adf';
 const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
 ---
 
