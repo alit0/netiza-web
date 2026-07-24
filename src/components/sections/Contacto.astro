@@ -120,14 +120,20 @@ const whatsappFallback = whatsappUrl(WHATSAPP_MESSAGES.cta);
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
     background: var(--card-bg);
-    border: var(--border-width) solid var(--color-border-subtle);
+    border: var(--border-width) solid color-mix(in srgb, var(--color-text-primary) 16%, transparent);
     border-radius: var(--radius-md);
-    transition: border-color 0.2s ease;
+    /* Soft shadow + adaptive border so the fields read against the canvas
+       in both light and dark themes (the flat card-bg alone blends in). */
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-base-ink) 6%, transparent),
+      0 4px 10px color-mix(in srgb, var(--color-base-ink) 8%, transparent);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .contacto__input:focus-visible {
     outline: none;
     border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
   }
 
   .contacto__textarea {
