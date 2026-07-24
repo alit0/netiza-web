@@ -1,0 +1,99 @@
+---
+// Centralized analytics: Google Analytics 4, Microsoft Clarity, Meta Pixel,
+// and the delegated WhatsApp conversion tracker. Add or change tracking here
+// so the rest of the app never touches vendor snippets.
+const GA4_ID = 'G-JVL2NEB5B8';
+const CLARITY_ID = 'xpl9ohlf19';
+const META_PIXEL_ID = '984406524644113';
+---
+
+{/* Google Analytics 4 */}
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+<script is:inline define:vars={{ GA4_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', GA4_ID);
+</script>
+
+{/* Microsoft Clarity */}
+<script is:inline define:vars={{ CLARITY_ID }}>
+  (function (c, l, a, r, i, t, y) {
+    c[a] =
+      c[a] ||
+      function () {
+        (c[a].q = c[a].q || []).push(arguments);
+      };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = 'https://www.clarity.ms/tag/' + i;
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+  })(window, document, 'clarity', 'script', CLARITY_ID);
+</script>
+
+{/* Meta Pixel */}
+<script is:inline define:vars={{ META_PIXEL_ID }}>
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', META_PIXEL_ID);
+  fbq('track', 'PageView');
+</script>
+<noscript
+  ><img
+    height="1"
+    width="1"
+    style="display:none"
+    src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+    alt=""
+  /></noscript>
+
+{/* WhatsApp conversion tracking (GA4 + Meta) with source section */}
+<script>
+  // One delegated listener covers every WhatsApp CTA (current and future),
+  // tagging the section it came from so we can see which part of the site
+  // drives conversations. The landmark selector is scoped to top-level
+  // section/header.navbar/footer.footer to avoid mislabeling from nested
+  // nav/footer elements inside a section.
+  const sectionFromLandmark = (el: Element): string => {
+    const landmark = el.closest('section, header.navbar, footer.footer');
+    if (!landmark) return 'unknown';
+    if (landmark.id) return landmark.id;
+    const token = Array.from(landmark.classList).find((c) => c !== 'section');
+    return token || landmark.tagName.toLowerCase();
+  };
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element | null;
+    const link = target?.closest<HTMLAnchorElement>('a[href*="wa.me"]');
+    if (!link) return;
+
+    const section = sectionFromLandmark(link);
+
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    if (typeof gtag === 'function') {
+      gtag('event', 'whatsapp_click', { section, link_url: link.href });
+    }
+
+    const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+    if (typeof fbq === 'function') {
+      fbq('trackCustom', 'WhatsappClick', { section });
+    }
+  });
+</script>
