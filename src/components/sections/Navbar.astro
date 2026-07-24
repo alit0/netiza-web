@@ -2,6 +2,7 @@
 import Logo from '../ui/Logo.astro';
 import Button from '../ui/Button.astro';
 import ThemeToggle from '../ui/ThemeToggle.astro';
+import SocialLinks from '../ui/SocialLinks.astro';
 import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 
 const links = [
@@ -27,6 +28,7 @@ const links = [
       </ul>
       <div class="navbar__menu-cta">
         <Button href={whatsappUrl(WHATSAPP_MESSAGES.navbar)} target="_blank" rel="noopener">WhatsApp</Button>
+        <SocialLinks class="navbar__social" />
       </div>
     </div>
 
@@ -80,6 +82,12 @@ const links = [
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .navbar__menu-cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
   }
 
   .navbar__link {
