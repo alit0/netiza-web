@@ -30,14 +30,35 @@ npm run build      # genera dist/
 El build incluye `dist/.htaccess` (viene de `public/.htaccess`). Si falta, la subida
 pierde los headers de seguridad y el cache — verificarlo SIEMPRE antes de subir.
 
-## Deploy (proceso actual: manual)
+## Deploy (recomendado: MCP nativo — 100% desde agente)
 
-1. `npm run build`
-2. En hPanel → Administrador de archivos → `public_html`:
-   **vaciar la carpeta antes de subir** (la subida manual MERGEA, no reemplaza —
-   si no se limpia, se acumulan archivos huérfanos de builds viejos).
-3. Subir **todo el contenido** de `dist/` (no la carpeta `dist` en sí).
-4. Confirmar que `.htaccess` llegó (archivos ocultos visibles).
+> **Actualizado 2026-07-24.** El deploy nativo de Hostinger SÍ funciona. Los HTTP 500
+> que veíamos eran por **zips corruptos** creados con `tar -a -cf` en git-bash (Windows),
+> no por la herramienta. Con un zip válido, `hosting_deployStaticWebsite` extrae bien
+> Y **reemplaza** `public_html` (sin huérfanos, sin zip colgando).
+
+1. `npm run build` (incluye `dist/.htaccess`).
+2. **Crear el zip con PowerShell** (NO con `tar` — genera zips corruptos):
+   ```bash
+   powershell -NoProfile -Command "Compress-Archive -Path (Get-ChildItem -Force 'C:\Users\Ale\proyectos\netiza-web\dist' | Select-Object -ExpandProperty FullName) -DestinationPath 'OUT.zip' -Force"
+   ```
+   `-Force` en `Get-ChildItem` incluye el `.htaccess` oculto.
+3. **Validar el zip ANTES de subir** (no negociable): `unzip -t OUT.zip` → debe decir "No errors".
+   Chequear también: `unzip -l OUT.zip | grep htaccess` (1) y `unzip -p OUT.zip index.html | grep <marcador del cambio>`.
+4. `hosting_deployStaticWebsite({ domain: "netiza.com.ar", archivePath: "OUT.zip", removeArchive: true })`.
+   La respuesta debe traer `deploy.status: "success"`. Si trae 500 → el zip está corrupto, volver al paso 2.
+
+### Deploy manual (fallback si no hay MCP)
+
+hPanel → Administrador de archivos → `public_html`: **vaciar la carpeta antes de subir**
+(la subida manual MERGEA, no reemplaza → se acumulan huérfanos). Subir **todo el contenido**
+de `dist/` (no la carpeta `dist`). Confirmar que `.htaccess` llegó (archivos ocultos visibles).
+
+### Fallback intermedio (upload MCP OK pero deploy 500)
+
+Si el zip es válido pero igual da 500: dejar que el MCP suba el zip (el upload sí funciona),
+extraerlo con un **cron temporal** `unzip -o /abs/OUT.zip -d /abs/public_html`, verificar,
+y un segundo cron `rm` del zip (queda público). Detalle de crons en [[mcp-seo-analytics]].
 
 ### Verificación post-deploy (no negociable)
 
@@ -53,13 +74,6 @@ curl -sI https://netiza.com.ar/assets/slide1.mp4 | grep -i "cache-control"
 
 Regla del equipo: **nada pasa a "hecho" sin evidencia** — correr estos curls y
 pegar el resultado en la card de Plane correspondiente.
-
-### Deploy por MCP (estado 2026-07-22: NO funciona)
-
-`hosting_deployStaticWebsite` sube el zip pero la extracción devuelve **HTTP 500**
-para este dominio (3 intentos, 2 formatos de zip — probablemente por ser dominio
-addon). Reintentar en algún release futuro; si persiste, evaluar deploy por Git
-desde hPanel. Detalle en Engram: `deploy/hostinger-mcp-attempt`.
 
 ## Headers (`public/.htaccess`)
 
