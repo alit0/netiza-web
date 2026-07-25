@@ -1,0 +1,73 @@
+/* Mobile peek-slider — shared pattern.
+   A container tagged `.m-slider` is a 3-column grid on desktop and a horizontal
+   scroll-snap slider (one item + a peek of the next) on mobile. Position dots
+   live in `.m-slider__dots`. Interaction logic: src/scripts/mobileSlider.ts */
+
+.m-slider {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.m-slider__dots {
+  display: none;
+}
+
+@media (max-width: 809px) {
+  .m-slider {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Bleed to the screen edges so the peek sits at the edge. */
+    margin-inline: calc(-1 * var(--space-6));
+    padding-inline: var(--space-6);
+    scroll-padding-inline: var(--space-6);
+    scrollbar-width: none;
+  }
+
+  .m-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .m-slider > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+
+  .m-slider__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+
+  /* 24px hit area, 8px visible dot — matches the hero indicator. */
+  .m-slider__dot {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .m-slider__dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-text-primary) 25%, transparent);
+    transform: translate(-50%, -50%);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .m-slider__dot[aria-current='true']::before {
+    background: var(--color-accent);
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}

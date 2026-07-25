@@ -1,5 +1,11 @@
 ---
 import Kicker from '../ui/Kicker.astro';
+
+const members = [
+  { photo: 'foto-emi', name: 'Emilia', role: 'Estrategia y UX', alt: 'Retrato de Emilia, estrategia y UX en Netiza' },
+  { photo: 'foto-pame', name: 'Pamela', role: 'Negocio y e-commerce', alt: 'Retrato de Pamela, negocio y e-commerce en Netiza' },
+  { photo: 'foto-ale', name: 'Alejandro', role: 'Tecnología e IA', alt: 'Retrato de Alejandro, tecnología e IA en Netiza' },
+];
 ---
 
 <section class="equipo section" aria-labelledby="equipo-title">
@@ -8,52 +14,36 @@ import Kicker from '../ui/Kicker.astro';
     <h2 id="equipo-title" class="equipo__title">
       Personas <span class="accent">reales</span> detrás de tu proyecto.
     </h2>
-    <div class="equipo__grid">
-      <figure class="equipo__member">
-        <div class="equipo__photo">
-          <img
-            src="/assets/foto-emi.webp"
-            alt="Retrato de Emilia, estrategia y UX en Netiza"
-            width="341"
-            height="420"
-            loading="lazy" decoding="async"
-          />
-        </div>
-        <figcaption>
-          <p class="equipo__name">Emilia</p>
-          <p class="equipo__role">Estrategia y UX</p>
-        </figcaption>
-      </figure>
-      <figure class="equipo__member">
-        <div class="equipo__photo">
-          <img
-            src="/assets/foto-pame.webp"
-            alt="Retrato de Pamela, negocio y e-commerce en Netiza"
-            width="341"
-            height="420"
-            loading="lazy" decoding="async"
-          />
-        </div>
-        <figcaption>
-          <p class="equipo__name">Pamela</p>
-          <p class="equipo__role">Negocio y e-commerce</p>
-        </figcaption>
-      </figure>
-      <figure class="equipo__member">
-        <div class="equipo__photo">
-          <img
-            src="/assets/foto-ale.webp"
-            alt="Retrato de Alejandro, tecnología e IA en Netiza"
-            width="341"
-            height="420"
-            loading="lazy" decoding="async"
-          />
-        </div>
-        <figcaption>
-          <p class="equipo__name">Alejandro</p>
-          <p class="equipo__role">Tecnología e IA</p>
-        </figcaption>
-      </figure>
+    <div class="m-slider">
+      {members.map((member) => (
+        <figure class="equipo__member">
+          <div class="equipo__photo">
+            <img
+              src={`/assets/${member.photo}.webp`}
+              alt={member.alt}
+              width="341"
+              height="420"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <p class="equipo__name">{member.name}</p>
+            <p class="equipo__role">{member.role}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    {/* Position dots — only shown on mobile, where the grid becomes a slider. */}
+    <div class="m-slider__dots" role="group" aria-label="Navegar entre el equipo">
+      {members.map((member, i) => (
+        <button
+          class="m-slider__dot"
+          type="button"
+          aria-label={`Ver a ${member.name}`}
+          aria-current={i === 0 ? 'true' : 'false'}
+        ></button>
+      ))}
     </div>
   </div>
 </section>
@@ -75,12 +65,6 @@ import Kicker from '../ui/Kicker.astro';
     letter-spacing: -0.04em;
     color: var(--color-text-primary);
     margin: var(--space-6) 0 var(--space-12);
-  }
-
-  .equipo__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
   }
 
   .equipo__member {
@@ -127,18 +111,16 @@ import Kicker from '../ui/Kicker.astro';
       letter-spacing: -0.05em;
     }
 
-    .equipo__grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-8);
-    }
-
-    .equipo__photo {
-      aspect-ratio: 342 / 340;
-    }
-
     .equipo__name {
       font-size: var(--font-size-lg);
       letter-spacing: -0.04em;
     }
   }
 </style>
+
+<script>
+  import { initMobileSlider } from '../../scripts/mobileSlider';
+
+  const section = document.querySelector<HTMLElement>('.equipo');
+  if (section) initMobileSlider(section);
+</script>

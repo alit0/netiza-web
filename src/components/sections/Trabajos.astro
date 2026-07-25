@@ -15,7 +15,7 @@ const reels = [
     <h2 id="trabajos-title" class="trabajos__title">
       Contenido que <span class="accent">trabaja</span> por tu negocio.
     </h2>
-    <div class="trabajos__grid">
+    <div class="m-slider">
       {reels.map((reel) => (
         <figure class="trabajos__reel">
           <MediaSlot label={reel.label}>
@@ -36,13 +36,12 @@ const reels = [
         </figure>
       ))}
     </div>
-    {/* Position dots — only shown on mobile, where the grid becomes a swipe slider. */}
-    <div class="trabajos__dots" role="group" aria-label="Navegar entre los trabajos">
+    {/* Position dots — only shown on mobile, where the grid becomes a slider. */}
+    <div class="m-slider__dots" role="group" aria-label="Navegar entre los trabajos">
       {reels.map((reel, i) => (
         <button
-          class="trabajos__dot"
+          class="m-slider__dot"
           type="button"
-          data-index={i}
           aria-label={`Ver ${reel.label}`}
           aria-current={i === 0 ? 'true' : 'false'}
         ></button>
@@ -68,12 +67,6 @@ const reels = [
     letter-spacing: -0.04em;
     color: var(--color-text-primary);
     margin: var(--space-6) 0 var(--space-12);
-  }
-
-  .trabajos__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
   }
 
   .trabajos__reel {
@@ -102,11 +95,6 @@ const reels = [
     text-align: center;
   }
 
-  /* Dots: hidden on desktop (3-col grid shows everything). */
-  .trabajos__dots {
-    display: none;
-  }
-
   @media (max-width: 809px) {
     .trabajos__inner {
       padding-inline: var(--space-6);
@@ -117,142 +105,49 @@ const reels = [
       line-height: 1.12;
       letter-spacing: -0.05em;
     }
-
-    /* The 3-col grid becomes a horizontal swipe slider that shows one reel
-       plus a peek of the next, cutting the mobile page height. */
-    .trabajos__grid {
-      display: flex;
-      grid-template-columns: none;
-      gap: var(--space-4);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      /* Bleed to the screen edges so the peek sits at the edge. */
-      margin-inline: calc(-1 * var(--space-6));
-      padding-inline: var(--space-6);
-      scroll-padding-inline: var(--space-6);
-      scrollbar-width: none;
-    }
-
-    .trabajos__grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    .trabajos__reel {
-      flex: 0 0 82%;
-      scroll-snap-align: start;
-    }
-
-    .trabajos__dots {
-      display: flex;
-      justify-content: center;
-      gap: var(--space-2);
-      margin-top: var(--space-6);
-    }
-
-    /* 24px hit area, 8px visible dot — matches the hero indicator. */
-    .trabajos__dot {
-      position: relative;
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .trabajos__dot::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 8px;
-      height: 8px;
-      border-radius: var(--radius-full);
-      background: color-mix(in srgb, var(--color-text-primary) 25%, transparent);
-      transform: translate(-50%, -50%);
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .trabajos__dot[aria-current='true']::before {
-      background: var(--color-accent);
-      transform: translate(-50%, -50%) scale(1.2);
-    }
   }
 </style>
 
 <script>
+  import { initMobileSlider } from '../../scripts/mobileSlider';
+
   const section = document.querySelector<HTMLElement>('.trabajos');
 
   if (section) {
-    const track = section.querySelector<HTMLElement>('.trabajos__grid');
-    const reels = Array.from(section.querySelectorAll<HTMLElement>('.trabajos__reel'));
-    const videos = reels.map((reel) => reel.querySelector<HTMLVideoElement>('.trabajos__video'));
-    const dots = Array.from(section.querySelectorAll<HTMLButtonElement>('.trabajos__dot'));
+    const videos = Array.from(section.querySelectorAll<HTMLVideoElement>('.trabajos__video'));
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mqMobile = window.matchMedia('(max-width: 809px)');
 
-    let observer: IntersectionObserver | null = null;
-
-    const playOnly = (index: number) => {
-      videos.forEach((video, i) => {
-        if (!video) return;
-        if (i === index) {
-          if (!prefersReducedMotion) video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-      dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === index)));
-    };
-
-    // Mobile: only the centered reel (>=60% visible in the track) plays.
-    const mobileObserver = () =>
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-              playOnly(reels.indexOf(entry.target as HTMLElement));
-            }
-          });
-        },
-        { root: track, threshold: 0.6 }
-      );
+    // Mobile: only the centered reel plays (others show poster) to save data.
+    initMobileSlider(section, {
+      onActiveChange: (index) => {
+        if (!mqMobile.matches) return;
+        videos.forEach((video, i) => {
+          if (i === index) {
+            if (!prefersReducedMotion) video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+    });
 
     // Desktop: every reel plays while the section is in view.
-    const desktopObserver = () =>
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const video = (entry.target as HTMLElement).querySelector<HTMLVideoElement>('.trabajos__video');
-            if (!video) return;
-            if (entry.isIntersecting) {
-              if (!prefersReducedMotion) video.play().catch(() => {});
-            } else {
-              video.pause();
-            }
-          });
-        },
-        { threshold: 0.25, rootMargin: '0px 0px 15% 0px' }
-      );
-
-    const wire = () => {
-      observer?.disconnect();
-      videos.forEach((video) => video?.pause());
-      observer = mqMobile.matches ? mobileObserver() : desktopObserver();
-      reels.forEach((reel) => observer!.observe(reel));
-    };
-
-    wire();
-    mqMobile.addEventListener('change', wire);
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        reels[i]?.scrollIntoView({
-          behavior: prefersReducedMotion ? 'auto' : 'smooth',
-          inline: 'start',
-          block: 'nearest',
+    const desktopObserver = new IntersectionObserver(
+      (entries) => {
+        if (mqMobile.matches) return;
+        entries.forEach((entry) => {
+          const video = (entry.target as HTMLElement).querySelector<HTMLVideoElement>('.trabajos__video');
+          if (!video) return;
+          if (entry.isIntersecting) {
+            if (!prefersReducedMotion) video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
         });
-      });
-    });
+      },
+      { threshold: 0.25, rootMargin: '0px 0px 15% 0px' }
+    );
+    section.querySelectorAll('.trabajos__reel').forEach((reel) => desktopObserver.observe(reel));
   }
 </script>
