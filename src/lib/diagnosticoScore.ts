@@ -189,6 +189,13 @@ export interface ResultCopySlots {
   areaVerde: string;
   /** Fills [área roja 1]. */
   areaRoja1: string;
+  /**
+   * `false` cuando no existe una fortaleza real que nombrar: o todas las
+   * dimensiones empatan (ninguna se destaca) o hasta la mejor esta en rojo.
+   * Sin esto, quien saca 0 en todo lee que sus cuatro areas son sus puntos
+   * mas fuertes, incluidas las dos que la misma frase declara las peores.
+   */
+  hayFortaleza: boolean;
   /** Fills [área roja 2]. */
   areaRoja2: string;
 }
@@ -322,8 +329,13 @@ export function resolveResultCopy(result: ScoreResult): ResultCopySlots {
     improve = byWeakest.slice(0, 2);
   }
 
+  // Solo hay fortaleza si la mejor dimension sale del rojo Y no empatan todas
+  // (si empatan, ninguna se destaca sobre las otras).
+  const hayFortaleza = maxScore > 33 && strongest.length < dims.length;
+
   return {
     areaVerde: joinLabels(strongest),
+    hayFortaleza,
     areaRoja1: improve[0]?.label ?? dims[0].label,
     areaRoja2: improve[1]?.label ?? dims[1]?.label ?? dims[0].label,
   };

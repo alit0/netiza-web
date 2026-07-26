@@ -42,9 +42,9 @@ const bonusB = preguntasBonus[1];
     <!-- Exact copy from DIAGNOSTICO-PREGUNTAS-FINAL.md; markers filled by script. -->
     <div class="diag-result__copy">
       <p class="diag-result__lead" data-copy-lead>
-        Tus puntos más fuertes están en <strong data-area-verde>[área verde]</strong>. Donde más podés
-        mejorar es en <strong data-area-roja-1>[área roja 1]</strong> y
-        <strong data-area-roja-2>[área roja 2]</strong>.
+        {/* Todo en una linea a proposito: el minificador de HTML se come los
+            saltos entre elementos inline y las frases quedan pegadas. */}
+        <span data-frase-fuerte>Tus puntos más fuertes están en <strong data-area-verde>[área verde]</strong>.</span> Donde más podés mejorar es en <strong data-area-roja-1>[área roja 1]</strong> y <strong data-area-roja-2>[área roja 2]</strong>.
       </p>
       <p class="diag-result__body">
         Esto no es una nota. Es una foto de hoy. La mayoría de los negocios que arrancan este
@@ -445,7 +445,19 @@ const bonusB = preguntasBonus[1];
         trafficEl.textContent = result.traffic;
         trafficEl.dataset.state = result.traffic;
       }
-      if (areaVerdeEl) areaVerdeEl.textContent = copy.areaVerde;
+      // Sin una fortaleza real que nombrar, se reemplaza la frase entera en vez
+      // de rellenar el hueco: decirle "tus puntos mas fuertes son estas cuatro"
+      // a quien saco cero en las cuatro destruye la credibilidad del resultado.
+      const fraseFuerteEl = root.querySelector('[data-frase-fuerte]');
+      if (fraseFuerteEl) {
+        if (copy.hayFortaleza) {
+          if (areaVerdeEl) areaVerdeEl.textContent = copy.areaVerde;
+        } else {
+          fraseFuerteEl.textContent = 'Hoy ninguna área se destaca sobre las otras.';
+        }
+      } else if (areaVerdeEl) {
+        areaVerdeEl.textContent = copy.areaVerde;
+      }
       if (areaRoja1El) areaRoja1El.textContent = copy.areaRoja1;
       if (areaRoja2El) areaRoja2El.textContent = copy.areaRoja2;
 
