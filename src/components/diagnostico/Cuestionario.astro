@@ -1,12 +1,9 @@
 ---
-import { preguntas, TOTAL_PREGUNTAS } from '../../data/diagnostico';
-
-const DIMENSIONES: Record<string, string> = {
-  encuentran: '¿Te encuentran?',
-  entienden: '¿Te entienden?',
-  escriben: '¿Te escriben?',
-  eligen: '¿Te siguen eligiendo?',
-};
+// Los datos del cuestionario los importa el <script> de abajo, no este
+// frontmatter: pasarlos con `define:vars` obliga a Astro a servir el script
+// como `is:inline`, y un script inline NO se transpila. Cualquier sintaxis de
+// TypeScript viajaria cruda al navegador y romperia el parseo entero, sin que
+// `npm run build` se entere. Ver scripts/smoke-diagnostico.py.
 ---
 
 <section class="cuestionario section" aria-labelledby="cuestionario-titulo">
@@ -266,7 +263,16 @@ const DIMENSIONES: Record<string, string> = {
   }
 </style>
 
-<script define:vars={{ preguntas, TOTAL_PREGUNTAS, DIMENSIONES }}>
+<script>
+  import { preguntas, TOTAL_PREGUNTAS } from '../../data/diagnostico';
+
+  const DIMENSIONES: Record<string, string> = {
+    encuentran: '¿Te encuentran?',
+    entienden: '¿Te entienden?',
+    escriben: '¿Te escriben?',
+    eligen: '¿Te siguen eligiendo?',
+  };
+
   const pantalla = document.getElementById('cuestionario-pantalla')!;
   const contador = document.getElementById('cuestionario-contador')!;
   const dimension = document.getElementById('cuestionario-dimension')!;
