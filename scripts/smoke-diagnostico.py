@@ -101,6 +101,22 @@ def main() -> int:
             check(page.locator("input[name='email']").count() > 0,
                   "el formulario de captura esta presente")
 
+            # El chequeo que faltaba: verificar que algo aparece no alcanza,
+            # hay que verificar que lo anterior se fue. Sin esto quedaban ~800px
+            # de cuestionario muerto arriba del resultado y la pagina "empujaba"
+            # al usuario hacia abajo sin motivo aparente.
+            cuest = page.locator("#cuestionario")
+            check(cuest.count() > 0 and not cuest.first.is_visible(),
+                  "el cuestionario desaparece al mostrar el resultado")
+            check("Calculando" not in page.locator("body").inner_text(),
+                  "no queda ningun 'Calculando...' colgado en la pagina")
+            arriba = page.evaluate(
+                "() => { const r = document.querySelector('#diagnostico-resultado');"
+                " return r ? r.getBoundingClientRect().top : 9999; }")
+            check(arriba < 200,
+                  "el resultado queda arriba de todo, no hay que scrollear para verlo",
+                  f"top={arriba:.0f}px")
+
             check(not errores, "cero errores de JavaScript en todo el recorrido",
                   " | ".join(errores[:2]))
             browser.close()

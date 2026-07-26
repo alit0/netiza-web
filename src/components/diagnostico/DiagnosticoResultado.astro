@@ -485,7 +485,12 @@ const bonusB = preguntasBonus[1];
       const copy = resolveResultCopy(result);
 
       if (overallEl) {
-        overallEl.textContent = String(Math.round(result.overall));
+        // Piso y no redondeo: el semaforo se decide sobre el promedio exacto,
+        // asi que redondear para arriba en pantalla produce contradicciones en
+        // los bordes (41,75 se mostraba como "42" con la etiqueta "Rojo",
+        // cuando 42 es justo el corte del rojo). Con piso, el numero que se ve
+        // y la etiqueta siempre coinciden.
+        overallEl.textContent = String(Math.floor(result.overall));
       }
       if (trafficEl) {
         trafficEl.textContent = result.traffic;
@@ -518,8 +523,27 @@ const bonusB = preguntasBonus[1];
         }
       }
 
+      // El cuestionario se va ANTES de mostrar el resultado. Si sigue en la
+      // pagina quedan ~800px muertos arriba con un "Calculando tu
+      // diagnostico..." que ya no calcula nada, el scrollIntoView tiene que
+      // saltarlos, y el usuario siente que la pagina lo empujo hacia abajo sin
+      // motivo. Se oculta aca y no en completar() a proposito: si el resultado
+      // fallara al renderizar, el cuestionario sigue en pantalla en vez de
+      // dejar la pagina vacia.
+      document.getElementById('cuestionario')?.setAttribute('hidden', '');
+
       root.hidden = false;
-      root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      root.scrollIntoView({ behavior: sinMovimiento ? 'auto' : 'smooth', block: 'start' });
+
+      // El foco acompana al scroll: sin esto, teclado y lector de pantalla se
+      // quedan en el cuestionario que acaba de desaparecer.
+      const titulo = root.querySelector('#diag-result-title');
+      if (titulo) {
+        titulo.setAttribute('tabindex', '-1');
+        titulo.focus({ preventScroll: true });
+      }
     };
 
     const handleComplete = (event) => {

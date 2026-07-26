@@ -260,7 +260,8 @@ export function buildInboxFields(input: {
   const areaFlag = minScore <= 33 ? 'ROJO' : 'sin área roja';
   const areaPrioritaria = `${areaNames} — ${minScore}/100 — ${areaFlag}`;
 
-  const overallRounded = Math.round(result.overall);
+  // Mismo criterio que la pantalla: piso, para que el mail y la UI digan lo mismo.
+  const overallRounded = Math.floor(result.overall);
   const overallLine = `${overallRounded}/100 — ${trafficUpperFromOverall(result.overall)}`;
 
   const dimLine = (id: DimensionId): string => {
