@@ -1,0 +1,13 @@
+# Marcar binarios explicitamente para que git nunca les toque los saltos de
+# linea. Hoy los detecta bien por heuristica, pero eso depende del
+# core.autocrlf de cada maquina y un PDF o un video convertido queda corrupto
+# sin que nada falle de forma ruidosa.
+*.pdf   binary
+*.webp  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.mp4   binary
+*.woff  binary
+*.woff2 binary

@@ -19,6 +19,11 @@ import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
       </Button>
       <span class="cta-final__microcopy">Cada proyecto según etapa, alcance y lo que buscás.</span>
     </div>
+    {/* Soft exit for whoever read the whole page and still isn't ready to talk.
+        Always AFTER the WhatsApp CTA: it must never intercept a warm lead. */}
+    <p class="cta-final__alt">
+      ¿Todavía no querés hablar? <a href="/diagnostico">Hacé el diagnóstico</a> y mirá cómo estás.
+    </p>
   </div>
 </section>
 
@@ -79,6 +84,18 @@ import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     line-height: 1.5;
+  }
+
+  .cta-final__alt {
+    margin: var(--space-6) 0 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .cta-final__alt a {
+    color: var(--color-text-primary);
+    text-underline-offset: 0.2em;
   }
 
   @media (max-width: 809px) {
