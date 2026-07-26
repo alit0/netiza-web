@@ -9,3 +9,5 @@ dist/
 .netlify/
 kilo.json
 originales/
+__pycache__/
+*.pyc
