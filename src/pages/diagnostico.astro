@@ -1,0 +1,28 @@
+---
+/**
+ * /diagnostico — questionnaire (Kilo) + scoring/result/lead (Grok).
+ *
+ * Runtime contract (window):
+ *   netiza:diagnostico_start
+ *   netiza:diagnostico_complete { detail: { respuestas: [{id, dimension, puntos, texto}, ×12] } }
+ *   netiza:diagnostico_lead
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Cuestionario from '../components/diagnostico/Cuestionario.astro';
+import DiagnosticoResultado from '../components/diagnostico/DiagnosticoResultado.astro';
+---
+
+<BaseLayout
+  title="Diagnóstico de presencia digital | Netiza"
+  description="Autodiagnóstico de 12 preguntas para ver cómo está la presencia digital de tu pyme. Puntaje honesto, sin humo."
+  canonical="https://netiza.com.ar/diagnostico"
+>
+  <Navbar />
+  <main id="main">
+    <Cuestionario />
+    <DiagnosticoResultado />
+  </main>
+  <Footer />
+</BaseLayout>

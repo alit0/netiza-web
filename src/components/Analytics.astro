@@ -96,4 +96,42 @@ const META_PIXEL_ID = '984406524644113';
       fbq('trackCustom', 'WhatsappClick', { section });
     }
   });
+
+  // The diagnostic UI reports funnel milestones through bubbling CustomEvents:
+  // netiza:diagnostico_start, netiza:diagnostico_complete and
+  // netiza:diagnostico_lead. Event details are deliberately ignored so answers
+  // and contact data can never reach analytics through this contract.
+  const diagnosticoEvents = {
+    'netiza:diagnostico_start': {
+      ga4: 'diagnostico_start',
+      meta: 'DiagnosticoStart',
+    },
+    'netiza:diagnostico_complete': {
+      ga4: 'diagnostico_complete',
+      meta: 'DiagnosticoComplete',
+    },
+    'netiza:diagnostico_lead': {
+      ga4: 'diagnostico_lead',
+      meta: 'DiagnosticoLead',
+    },
+  } as const;
+
+  const trackedDiagnosticoEvents = new Set<string>();
+
+  Object.entries(diagnosticoEvents).forEach(([browserEvent, analyticsEvent]) => {
+    document.addEventListener(browserEvent, () => {
+      if (trackedDiagnosticoEvents.has(browserEvent)) return;
+      trackedDiagnosticoEvents.add(browserEvent);
+
+      const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+      if (typeof gtag === 'function') {
+        gtag('event', analyticsEvent.ga4);
+      }
+
+      const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+      if (typeof fbq === 'function') {
+        fbq('trackCustom', analyticsEvent.meta);
+      }
+    });
+  });
 </script>

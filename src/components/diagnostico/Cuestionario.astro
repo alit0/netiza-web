@@ -1,0 +1,461 @@
+---
+import { preguntas, TOTAL_PREGUNTAS } from '../../data/diagnostico';
+
+const DIMENSIONES: Record<string, string> = {
+  encuentran: '¿Te encuentran?',
+  entienden: '¿Te entienden?',
+  escriben: '¿Te escriben?',
+  eligen: '¿Te siguen eligiendo?',
+};
+---
+
+<section class="cuestionario section" aria-labelledby="cuestionario-titulo">
+  <div class="cuestionario__inner">
+    <h2 id="cuestionario-titulo" class="cuestionario__titulo">Diagnóstico de presencia digital</h2>
+
+    <div class="cuestionario__progreso">
+      <span class="cuestionario__contador" aria-live="polite" id="cuestionario-contador">1 de 12</span>
+      <div
+        class="cuestionario__barra"
+        role="progressbar"
+        id="cuestionario-barra"
+        aria-valuenow="1"
+        aria-valuemin="1"
+        aria-valuemax="12"
+        aria-label="Progreso del diagnóstico"
+      >
+        <div class="cuestionario__barra-fill" id="cuestionario-barra-fill" style="width: 8.3%"></div>
+      </div>
+      <span class="cuestionario__dimension" aria-live="polite" id="cuestionario-dimension">¿Te encuentran?</span>
+    </div>
+
+    <div class="cuestionario__pantalla" id="cuestionario-pantalla" role="region" aria-live="polite" aria-label="Pregunta actual">
+    </div>
+
+    <div class="cuestionario__nav">
+      <button class="cuestionario__nav-btn cuestionario__nav-btn--prev" id="cuestionario-prev" type="button" disabled>
+        Anterior
+      </button>
+      <span class="cuestionario__paso" id="cuestionario-paso" aria-hidden="true"></span>
+      <span class="cuestionario__nav-spacer" aria-hidden="true"></span>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .cuestionario {
+    padding-block: var(--space-section-y);
+  }
+
+  .cuestionario__inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cuestionario__titulo {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8);
+  }
+
+  .cuestionario__progreso {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  .cuestionario__contador {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+  }
+
+  .cuestionario__dimension {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .cuestionario__barra {
+    width: 100%;
+    height: 4px;
+    background: var(--color-border-subtle);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .cuestionario__barra-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: var(--radius-full);
+    transition: width 0.3s ease;
+  }
+
+  .cuestionario__pantalla {
+    min-height: 12rem;
+  }
+
+  .cuestionario__pregunta {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+  }
+
+  .cuestionario__ayuda {
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    background: var(--kicker-bg);
+    border-radius: var(--radius-sm);
+  }
+
+  .cuestionario__opciones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    border: 0;
+  }
+
+  .cuestionario__opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-4);
+    background: var(--card-bg);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    text-align: left;
+    min-height: var(--size-touch);
+    transition:
+      border-color var(--motion-control) ease,
+      background-color var(--motion-control) ease;
+  }
+
+  .cuestionario__opcion:hover {
+    border-color: color-mix(in srgb, var(--color-text-primary) 20%, transparent);
+  }
+
+  .cuestionario__opcion--seleccionada {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--card-bg));
+  }
+
+  .cuestionario__opcion-indicador {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-text-muted);
+    transition: border-color var(--motion-control) ease;
+  }
+
+  .cuestionario__opcion--seleccionada .cuestionario__opcion-indicador {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: inset 0 0 0 3px var(--card-bg);
+  }
+
+  .cuestionario__opcion-texto {
+    flex: 1;
+  }
+
+  .cuestionario__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .cuestionario__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--size-touch);
+    padding: var(--space-3) var(--space-5);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-text-primary);
+    font: var(--font-control-weight) var(--font-size-sm) / 1 var(--font-body);
+    cursor: pointer;
+    transition:
+      border-color var(--motion-control) ease,
+      opacity var(--motion-control) ease;
+  }
+
+  .cuestionario__nav-btn:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--color-text-primary) 24%, transparent);
+  }
+
+  .cuestionario__nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .cuestionario__nav-btn:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--space-1);
+  }
+
+  .cuestionario__nav-spacer {
+    width: 88px;
+  }
+
+  .cuestionario__paso {
+    flex: 1;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .cuestionario__completado {
+    text-align: center;
+    padding-block: var(--space-12);
+  }
+
+  .cuestionario__completado-texto {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  @media (max-width: 809px) {
+    .cuestionario__inner {
+      padding-inline: var(--space-6);
+    }
+
+    .cuestionario__titulo {
+      font-size: var(--font-size-lg);
+    }
+
+    .cuestionario__pregunta {
+      font-size: var(--font-size-base);
+    }
+
+    .cuestionario__pantalla {
+      min-height: 10rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cuestionario__barra-fill {
+      transition: none;
+    }
+  }
+</style>
+
+<script define:vars={{ preguntas, TOTAL_PREGUNTAS, DIMENSIONES }}>
+  const pantalla = document.getElementById('cuestionario-pantalla')!;
+  const contador = document.getElementById('cuestionario-contador')!;
+  const dimension = document.getElementById('cuestionario-dimension')!;
+  const barra = document.getElementById('cuestionario-barra') as HTMLElement;
+  const barraFill = document.getElementById('cuestionario-barra-fill')!;
+  const prevBtn = document.getElementById('cuestionario-prev') as HTMLButtonElement;
+  const paso = document.getElementById('cuestionario-paso')!;
+
+  let currentIndex = 0;
+  const respuestas: (number | null)[] = new Array(TOTAL_PREGUNTAS).fill(null);
+  let transitionLock = false;
+  let startFired = false;
+
+  /**
+   * Funnel hitos: detail (if any) goes on window for Resultado.
+   * Mirror name-only on document so Analytics.astro document listeners fire
+   * (window-targeted events do not reach document listeners).
+   */
+  function emitNetiza(name: string, detail?: unknown) {
+    if (detail !== undefined) {
+      window.dispatchEvent(new CustomEvent(name, { detail }));
+    } else {
+      window.dispatchEvent(new CustomEvent(name));
+    }
+    document.dispatchEvent(new CustomEvent(name));
+  }
+
+  function actualizarProgreso() {
+    const n = currentIndex + 1;
+    contador.textContent = `${n} de ${TOTAL_PREGUNTAS}`;
+    dimension.textContent = DIMENSIONES[preguntas[currentIndex].dimension] ?? '';
+    barra.setAttribute('aria-valuenow', String(n));
+    const pct = ((n / TOTAL_PREGUNTAS) * 100).toFixed(1);
+    barraFill.style.width = `${pct}%`;
+  }
+
+  function render() {
+    if (currentIndex >= TOTAL_PREGUNTAS) {
+      completar();
+      return;
+    }
+
+    const pregunta = preguntas[currentIndex];
+    const seleccionada = respuestas[currentIndex];
+
+    let html = `<p class="cuestionario__pregunta">${pregunta.texto}</p>`;
+
+    if (pregunta.ayuda) {
+      html += `<p class="cuestionario__ayuda">${pregunta.ayuda}</p>`;
+    }
+
+    html += '<fieldset class="cuestionario__opciones">';
+    html += '<legend class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap">Seleccioná una opción</legend>';
+
+    pregunta.opciones.forEach((opcion: { texto: string; puntos: number }, i: number) => {
+      const esSeleccionada = seleccionada === i;
+      html += `
+        <button
+          class="cuestionario__opcion${esSeleccionada ? ' cuestionario__opcion--seleccionada' : ''}"
+          type="button"
+          role="radio"
+          aria-checked="${esSeleccionada}"
+          data-indice="${i}"
+        >
+          <span class="cuestionario__opcion-indicador" aria-hidden="true"></span>
+          <span class="cuestionario__opcion-texto">${opcion.texto}</span>
+        </button>`;
+    });
+
+    html += '</fieldset>';
+    pantalla.innerHTML = html;
+
+    prevBtn.disabled = currentIndex === 0;
+    paso.textContent = `${currentIndex + 1} de ${TOTAL_PREGUNTAS}`;
+    actualizarProgreso();
+
+    pantalla.querySelectorAll('.cuestionario__opcion').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (transitionLock) return;
+        const indice = Number((btn as HTMLElement).dataset.indice);
+        seleccionar(indice);
+      });
+    });
+
+    if (seleccionada !== null) {
+      const selectedBtn = pantalla.querySelector(`[data-indice="${seleccionada}"]`) as HTMLElement | null;
+      selectedBtn?.focus();
+    } else {
+      (pantalla.querySelector('.cuestionario__opcion') as HTMLElement | null)?.focus();
+    }
+  }
+
+  function seleccionar(opcionIndex: number) {
+    if (transitionLock) return;
+    respuestas[currentIndex] = opcionIndex;
+
+    // First confirmed answer — not page open (analytics contract).
+    if (!startFired) {
+      startFired = true;
+      emitNetiza('netiza:diagnostico_start');
+    }
+
+    pantalla.querySelectorAll('.cuestionario__opcion').forEach((btn) => {
+      const el = btn as HTMLElement;
+      const indice = Number(el.dataset.indice);
+      const esSeleccionada = indice === opcionIndex;
+      el.classList.toggle('cuestionario__opcion--seleccionada', esSeleccionada);
+      el.setAttribute('aria-checked', String(esSeleccionada));
+    });
+
+    if (currentIndex < TOTAL_PREGUNTAS - 1) {
+      transitionLock = true;
+      setTimeout(() => {
+        currentIndex++;
+        transitionLock = false;
+        render();
+      }, 350);
+    } else {
+      completar();
+    }
+  }
+
+  function completar() {
+    // Build by screen index, then emit in strict P1..P12 order with literal option text.
+    const byId = new Map<
+      string,
+      { id: string; dimension: string; puntos: number; texto: string }
+    >();
+    preguntas.forEach(
+      (
+        p: {
+          id: string;
+          dimension: string;
+          opciones: { puntos: number; texto: string }[];
+        },
+        i: number,
+      ) => {
+        const optIndex = respuestas[i];
+        if (optIndex === null) return;
+        const opt = p.opciones[optIndex];
+        byId.set(p.id.toUpperCase(), {
+          id: p.id.toLowerCase(),
+          dimension: p.dimension,
+          puntos: opt.puntos,
+          texto: opt.texto,
+        });
+      },
+    );
+
+    const respuestasOrdenadas = [];
+    for (let n = 1; n <= 12; n++) {
+      const item = byId.get(`P${n}`);
+      if (!item) {
+        console.error(`[diagnostico] missing answer for P${n}`);
+        return;
+      }
+      respuestasOrdenadas.push(item);
+    }
+
+    pantalla.innerHTML = `
+      <div class="cuestionario__completado" role="status">
+        <p class="cuestionario__completado-texto">Calculando tu diagnóstico…</p>
+      </div>`;
+
+    contador.textContent = `${TOTAL_PREGUNTAS} de ${TOTAL_PREGUNTAS}`;
+    barra.setAttribute('aria-valuenow', String(TOTAL_PREGUNTAS));
+    barraFill.style.width = '100%';
+    prevBtn.disabled = true;
+    paso.textContent = '';
+    dimension.textContent = '';
+
+    // Canonical runtime contract (window + detail with literal texto). No direct gtag.
+    emitNetiza('netiza:diagnostico_complete', { respuestas: respuestasOrdenadas });
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0 && !transitionLock) {
+      currentIndex--;
+      render();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' && currentIndex > 0 && !transitionLock) {
+      e.preventDefault();
+      currentIndex--;
+      render();
+    }
+  });
+
+  render();
+</script>

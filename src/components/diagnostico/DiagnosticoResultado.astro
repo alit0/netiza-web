@@ -1,0 +1,614 @@
+---
+/**
+ * Result screen + lead capture for /diagnostico.
+ * Listens on window for netiza:diagnostico_complete with detail.respuestas.
+ * POST field names and literal option text: docs/research/impl-analytics-codex.md.
+ */
+import Button from '../ui/Button.astro';
+import { whatsappUrl, FORM_ENDPOINT } from '../../data/links';
+import { preguntasBonus } from '../../data/diagnostico';
+
+const PDF_URL = '/assets/diagnostico-guia.pdf';
+const whatsappFallback = whatsappUrl(
+  'Hola Netiza, completé el diagnóstico digital y no pude enviar el formulario. ¿Me ayudan?',
+);
+
+const bonusA = preguntasBonus[0];
+const bonusB = preguntasBonus[1];
+---
+
+<section
+  id="diagnostico-resultado"
+  class="diag-result"
+  hidden
+  aria-labelledby="diag-result-title"
+  data-form-endpoint={FORM_ENDPOINT}
+  data-pdf-url={PDF_URL}
+  data-whatsapp-fallback={whatsappFallback}
+>
+  <div class="diag-result__inner">
+    <p class="diag-result__kicker">Resultado</p>
+    <h2 id="diag-result-title" class="diag-result__title">Tu diagnóstico está listo</h2>
+
+    <div class="diag-result__score-block" data-score-block>
+      <p class="diag-result__overall">
+        <span class="diag-result__overall-label">Puntaje general</span>
+        <span class="diag-result__overall-value" data-overall>—</span>
+        <span class="diag-result__traffic" data-traffic data-state=""></span>
+      </p>
+      <ul class="diag-result__dims" data-dims></ul>
+    </div>
+
+    <!-- Exact copy from DIAGNOSTICO-PREGUNTAS-FINAL.md; markers filled by script. -->
+    <div class="diag-result__copy">
+      <p class="diag-result__lead" data-copy-lead>
+        Tus puntos más fuertes están en <strong data-area-verde>[área verde]</strong>. Donde más podés
+        mejorar es en <strong data-area-roja-1>[área roja 1]</strong> y
+        <strong data-area-roja-2>[área roja 2]</strong>.
+      </p>
+      <p class="diag-result__body">
+        Esto no es una nota. Es una foto de hoy. La mayoría de los negocios que arrancan este
+        diagnóstico tienen resultados parecidos al tuyo, y los que mejoran no son los que sacan
+        puntaje perfecto: son los que agarran un área por vez y la trabajan.
+      </p>
+    </div>
+
+    <div class="diag-result__cta-copy">
+      <h3 class="diag-result__cta-title">¿Querés saber qué hacer con lo que te salió rojo?</h3>
+      <p class="diag-result__body">
+        Dejame tu nombre y tu mail y te muestro una guía con acciones concretas para cada una de
+        estas áreas, en criollo y sin humo.
+      </p>
+      <p class="diag-result__body">
+        En los próximos días te escribo personalmente para comentarte <strong>una</strong> de las
+        áreas y ver si te sirve darle para adelante. Sin compromiso, sin suscripción, sin spam.
+      </p>
+    </div>
+
+    <form class="diag-result__form" method="POST" novalidate data-diag-form>
+      <p class="diag-result__bonus-intro">Dos últimas, y estas no puntúan.</p>
+
+      <fieldset class="diag-result__fieldset">
+        <legend class="diag-result__legend">A. {bonusA.texto}</legend>
+        {
+          bonusA.opciones.map((label) => (
+            <label class="diag-result__option">
+              <input type="radio" name="20_origen_consultas_ultimos_30_dias" value={label} />
+              <span>{label}</span>
+            </label>
+          ))
+        }
+        <span class="diag-result__error" data-error-for="bonus_a" role="alert"></span>
+      </fieldset>
+
+      <fieldset class="diag-result__fieldset">
+        <legend class="diag-result__legend">B. {bonusB.texto}</legend>
+        {
+          bonusB.opciones.map((label) => (
+            <label class="diag-result__option">
+              <input type="radio" name="21_visibilidad_en_ia" value={label} />
+              <span>{label}</span>
+            </label>
+          ))
+        }
+        <span class="diag-result__error" data-error-for="bonus_b" role="alert"></span>
+      </fieldset>
+
+      <div class="diag-result__field">
+        <label class="diag-result__label" for="diag-nombre">Nombre</label>
+        <input
+          class="diag-result__input"
+          id="diag-nombre"
+          type="text"
+          name="06_nombre"
+          autocomplete="name"
+          required
+        />
+        <span class="diag-result__error" data-error-for="06_nombre" role="alert"></span>
+      </div>
+
+      <div class="diag-result__field">
+        <label class="diag-result__label" for="diag-email">Email</label>
+        <input
+          class="diag-result__input"
+          id="diag-email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          inputmode="email"
+          required
+        />
+        <span class="diag-result__error" data-error-for="email" role="alert"></span>
+      </div>
+
+      <input class="diag-result__honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <input type="hidden" name="_captcha" value="false" />
+
+      {/* Summary + answer fields filled by script in Codex order. */}
+      <div data-hidden-payload hidden></div>
+
+      <Button type="submit">Quiero la guía</Button>
+      <p class="diag-result__status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="diag-result__pdf" data-pdf-block hidden>
+      <h3 class="diag-result__cta-title">Tu guía</h3>
+      <p class="diag-result__body">
+        Gracias. Acá tenés el link a la guía con acciones por área. En los próximos días te escribo
+        personalmente.
+      </p>
+      <Button href={PDF_URL} target="_blank" rel="noopener">Abrir la guía (PDF)</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .diag-result {
+    padding-block: var(--space-section-y);
+  }
+
+  .diag-result__inner {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding-inline: var(--space-6);
+  }
+
+  .diag-result__kicker {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .diag-result__title {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__score-block {
+    margin-bottom: var(--space-8);
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-card);
+    border: var(--size-stroke) solid var(--color-border-subtle);
+  }
+
+  .diag-result__overall {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-4);
+  }
+
+  .diag-result__overall-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .diag-result__overall-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    letter-spacing: -0.04em;
+  }
+
+  .diag-result__traffic {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    text-transform: capitalize;
+  }
+
+  .diag-result__traffic[data-state='verde'] {
+    color: #0f5132;
+    background: color-mix(in srgb, #198754 18%, transparent);
+  }
+
+  .diag-result__traffic[data-state='amarillo'] {
+    color: #664d03;
+    background: color-mix(in srgb, #ffc107 28%, transparent);
+  }
+
+  .diag-result__traffic[data-state='rojo'] {
+    color: #842029;
+    background: color-mix(in srgb, #dc3545 18%, transparent);
+  }
+
+  .diag-result__dims {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .diag-result__dim {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__dim[data-red='true'] .diag-result__dim-score {
+    color: #842029;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .diag-result__copy,
+  .diag-result__cta-copy {
+    margin-bottom: var(--space-8);
+  }
+
+  .diag-result__lead,
+  .diag-result__body {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-md);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  .diag-result__lead strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .diag-result__cta-title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+
+  .diag-result__bonus-intro {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .diag-result__legend {
+    padding: 0;
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__option {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    font-size: var(--font-size-sm);
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .diag-result__option input {
+    margin-top: 0.2em;
+    flex-shrink: 0;
+  }
+
+  .diag-result__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .diag-result__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font: inherit;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    background: var(--color-bg-surface);
+    border: var(--size-stroke) solid color-mix(in srgb, var(--color-text-primary) 16%, transparent);
+    border-radius: var(--radius-md);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-base-ink) 6%, transparent),
+      0 4px 10px color-mix(in srgb, var(--color-base-ink) 8%, transparent);
+  }
+
+  .diag-result__input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+
+  .diag-result__input[aria-invalid='true'] {
+    border-color: var(--color-accent);
+  }
+
+  .diag-result__error {
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+    color: var(--color-accent);
+    min-height: 1em;
+  }
+
+  .diag-result__honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .diag-result__status {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    min-height: 1.5em;
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__pdf {
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-card);
+    border: var(--size-stroke) solid var(--color-border-subtle);
+  }
+
+  @media (max-width: 809px) {
+    .diag-result__title {
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+    }
+  }
+</style>
+
+<script>
+  import {
+    buildInboxFields,
+    resolveResultCopy,
+    scoreFromRespuestas,
+  } from '../../lib/diagnosticoScore';
+
+  const root = document.getElementById('diagnostico-resultado');
+  if (root) {
+    const form = root.querySelector('[data-diag-form]');
+    const statusEl = root.querySelector('.diag-result__status');
+    const pdfBlock = root.querySelector('[data-pdf-block]');
+    const payloadHost = root.querySelector('[data-hidden-payload]');
+    const dimsList = root.querySelector('[data-dims]');
+    const overallEl = root.querySelector('[data-overall]');
+    const trafficEl = root.querySelector('[data-traffic]');
+    const areaVerdeEl = root.querySelector('[data-area-verde]');
+    const areaRoja1El = root.querySelector('[data-area-roja-1]');
+    const areaRoja2El = root.querySelector('[data-area-roja-2]');
+
+    const endpoint = root.dataset.formEndpoint ?? '';
+    const fallbackUrl = root.dataset.whatsappFallback ?? '';
+
+    /** @type {ReturnType<typeof scoreFromRespuestas> | null} */
+    let lastResult = null;
+    /** @type {Array<{ id: string; dimension: string; puntos: number; texto: string }> | null} */
+    let lastRespuestas = null;
+
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    function emitLead() {
+      window.dispatchEvent(new CustomEvent('netiza:diagnostico_lead'));
+      // Mirror for Analytics.astro document listeners (no detail / no PII).
+      document.dispatchEvent(new CustomEvent('netiza:diagnostico_lead'));
+    }
+
+    const setFieldError = (name, message) => {
+      const errorEl = root.querySelector(`[data-error-for="${name}"]`);
+      if (errorEl) errorEl.textContent = message ?? '';
+      if (name === '06_nombre' || name === 'email') {
+        const input = form?.querySelector(`[name="${name}"]`);
+        input?.setAttribute('aria-invalid', message ? 'true' : 'false');
+      }
+    };
+
+    const renderResult = (result) => {
+      lastResult = result;
+      const copy = resolveResultCopy(result);
+
+      if (overallEl) {
+        overallEl.textContent = String(Math.round(result.overall));
+      }
+      if (trafficEl) {
+        trafficEl.textContent = result.traffic;
+        trafficEl.dataset.state = result.traffic;
+      }
+      if (areaVerdeEl) areaVerdeEl.textContent = copy.areaVerde;
+      if (areaRoja1El) areaRoja1El.textContent = copy.areaRoja1;
+      if (areaRoja2El) areaRoja2El.textContent = copy.areaRoja2;
+
+      if (dimsList) {
+        dimsList.replaceChildren();
+        for (const dim of result.dimensions) {
+          const li = document.createElement('li');
+          li.className = 'diag-result__dim';
+          li.dataset.red = dim.isRed ? 'true' : 'false';
+          li.innerHTML = `<span>${dim.label}</span><span class="diag-result__dim-score">${dim.score}</span>`;
+          dimsList.appendChild(li);
+        }
+      }
+
+      root.hidden = false;
+      root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const handleComplete = (event) => {
+      const respuestas = event.detail?.respuestas;
+      if (!Array.isArray(respuestas) || respuestas.length !== 12) {
+        console.error(
+          '[diagnostico] netiza:diagnostico_complete expects detail.respuestas length 12',
+        );
+        return;
+      }
+      for (const r of respuestas) {
+        if (typeof r?.texto !== 'string' || typeof r?.puntos !== 'number') {
+          console.error('[diagnostico] each respuesta needs puntos + texto');
+          return;
+        }
+      }
+      lastRespuestas = respuestas;
+      const result = scoreFromRespuestas(respuestas);
+      renderResult(result);
+    };
+
+    // Canonical listener: window only (never document) for the handoff contract.
+    window.addEventListener('netiza:diagnostico_complete', handleComplete);
+
+    window.__netizaDiagnostico = {
+      /** Test helper: simulate complete with full respuestas payload. */
+      showResultFromRespuestas: (respuestas) => {
+        lastRespuestas = respuestas;
+        const result = scoreFromRespuestas(respuestas);
+        renderResult(result);
+        return result;
+      },
+      getLastResult: () => lastResult,
+      getLastRespuestas: () => lastRespuestas,
+      buildPayloadPreview: (nombre, email, bonusA, bonusB) => {
+        if (!lastResult || !lastRespuestas) return null;
+        return buildInboxFields({
+          result: lastResult,
+          respuestas: lastRespuestas,
+          nombre,
+          email,
+          bonusA,
+          bonusB,
+        });
+      },
+    };
+
+    if (form && statusEl) {
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!lastResult || !lastRespuestas) {
+          statusEl.textContent = 'Completá el diagnóstico antes de enviar.';
+          return;
+        }
+
+        setFieldError('06_nombre', null);
+        setFieldError('email', null);
+        setFieldError('bonus_a', null);
+        setFieldError('bonus_b', null);
+
+        const nombreInput = form.querySelector('[name="06_nombre"]');
+        const emailInput = form.querySelector('[name="email"]');
+        const nombre = nombreInput?.value ?? '';
+        const email = emailInput?.value ?? '';
+        const bonusAEl = form.querySelector(
+          'input[name="20_origen_consultas_ultimos_30_dias"]:checked',
+        );
+        const bonusBEl = form.querySelector('input[name="21_visibilidad_en_ia"]:checked');
+
+        let valid = true;
+        let firstInvalid = null;
+        if (nombre.trim().length < 2) {
+          setFieldError('06_nombre', 'Ingresá tu nombre.');
+          valid = false;
+          firstInvalid = nombreInput;
+        }
+        if (!EMAIL_RE.test(email.trim())) {
+          setFieldError('email', 'Ingresá un email válido, por ejemplo nombre@dominio.com.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = emailInput;
+        }
+        if (!bonusAEl) {
+          setFieldError('bonus_a', 'Elegí una opción.');
+          valid = false;
+        }
+        if (!bonusBEl) {
+          setFieldError('bonus_b', 'Elegí una opción.');
+          valid = false;
+        }
+        if (!valid) {
+          firstInvalid?.focus();
+          return;
+        }
+
+        if (submitBtn) submitBtn.disabled = true;
+        statusEl.textContent = 'Enviando…';
+
+        try {
+          // Build FormData in Codex order (summary first). Visible inputs are read only;
+          // we do not use FormData(form) so field order stays deterministic.
+          const fields = buildInboxFields({
+            result: lastResult,
+            respuestas: lastRespuestas,
+            nombre: nombre.trim(),
+            email: email.trim(),
+            bonusA: bonusAEl.value,
+            bonusB: bonusBEl.value,
+          });
+          const body = new FormData();
+          for (const [name, value] of fields) {
+            body.append(name, value);
+          }
+          const honey = form.querySelector('[name="_honey"]');
+          body.append('_honey', honey?.value ?? '');
+          body.append('_captcha', 'false');
+
+          // Keep a preview for debugging / QA (no endpoint).
+          if (payloadHost) {
+            payloadHost.replaceChildren();
+            payloadHost.dataset.lastPayload = JSON.stringify(fields);
+          }
+
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body,
+          });
+          const data = await response.json().catch(() => ({}));
+
+          if (response.ok && String(data.success) === 'true') {
+            statusEl.textContent = '';
+            form.hidden = true;
+            if (pdfBlock) pdfBlock.hidden = false;
+            emitLead();
+          } else {
+            throw new Error('submit failed');
+          }
+        } catch {
+          statusEl.innerHTML =
+            'No pudimos enviar el formulario. Escribinos por ' +
+            `<a href="${fallbackUrl}" target="_blank" rel="noopener">WhatsApp</a>.`;
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    }
+  }
+</script>
