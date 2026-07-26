@@ -153,13 +153,16 @@ const bonusB = preguntasBonus[1];
     padding-inline: var(--space-6);
   }
 
+  /* Pill en arena como el resto del sitio, no un eyebrow en mayusculas. */
   .diag-result__kicker {
-    margin: 0 0 var(--space-3);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    display: inline-flex;
+    margin: 0 0 var(--space-5);
+    padding: var(--space-kicker-block) var(--space-kicker-inline);
+    border-radius: var(--radius-kicker);
+    background: var(--kicker-bg);
+    color: var(--kicker-text);
+    font-size: var(--font-kicker-size);
+    font-weight: var(--font-control-weight);
   }
 
   .diag-result__title {
@@ -174,9 +177,8 @@ const bonusB = preguntasBonus[1];
   .diag-result__score-block {
     margin-bottom: var(--space-8);
     padding: var(--space-6);
-    background: var(--color-bg-surface);
-    border-radius: var(--radius-card);
-    border: var(--size-stroke) solid var(--color-border-subtle);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
   }
 
   .diag-result__overall {
@@ -207,22 +209,47 @@ const bonusB = preguntasBonus[1];
     text-transform: capitalize;
   }
 
+  /* Estados semanticos armonizados con la paleta calida del sitio. El token
+     system no tiene colores de estado porque hasta ahora nada los necesitaba;
+     estos son los unicos, viven aca y se derivan de la marca. Los valores que
+     habia eran los de alerta por defecto de Bootstrap (#198754, #ffc107,
+     #dc3545): correctos en abstracto y ajenos a este sitio.
+     El rojo usa el acento de marca, asi la pagina mantiene una sola familia.
+     El color nunca comunica solo: la etiqueta dice el estado en palabras. */
+  .diag-result {
+    --estado-verde-text: #3d5a3a;
+    --estado-verde-bg: color-mix(in srgb, #3d5a3a 14%, transparent);
+    --estado-amarillo-text: #7a5a12;
+    --estado-amarillo-bg: color-mix(in srgb, var(--color-base-sand-light) 70%, transparent);
+    --estado-rojo-text: var(--color-base-accent-strong);
+    --estado-rojo-bg: color-mix(in srgb, var(--color-base-accent) 14%, transparent);
+  }
+
+  [data-theme='dark'] .diag-result {
+    --estado-verde-text: #a8c9a3;
+    --estado-verde-bg: color-mix(in srgb, #a8c9a3 16%, transparent);
+    --estado-amarillo-text: #e0c07a;
+    --estado-amarillo-bg: color-mix(in srgb, #e0c07a 16%, transparent);
+    --estado-rojo-text: #f7a07a;
+    --estado-rojo-bg: color-mix(in srgb, var(--color-base-accent) 22%, transparent);
+  }
+
   .diag-result__traffic[data-state='verde'] {
-    color: #0f5132;
-    background: color-mix(in srgb, #198754 18%, transparent);
+    color: var(--estado-verde-text);
+    background: var(--estado-verde-bg);
   }
 
   .diag-result__traffic[data-state='amarillo'] {
-    color: #664d03;
-    background: color-mix(in srgb, #ffc107 28%, transparent);
+    color: var(--estado-amarillo-text);
+    background: var(--estado-amarillo-bg);
   }
 
   .diag-result__traffic[data-state='rojo'] {
-    color: #842029;
-    background: color-mix(in srgb, #dc3545 18%, transparent);
+    color: var(--estado-rojo-text);
+    background: var(--estado-rojo-bg);
   }
 
-  .diag-result__dims {
+  :global(.diag-result__dims) {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -231,7 +258,7 @@ const bonusB = preguntasBonus[1];
     gap: var(--space-2);
   }
 
-  .diag-result__dim {
+  :global(.diag-result__dim) {
     display: flex;
     justify-content: space-between;
     gap: var(--space-4);
@@ -239,8 +266,8 @@ const bonusB = preguntasBonus[1];
     color: var(--color-text-primary);
   }
 
-  .diag-result__dim[data-red='true'] .diag-result__dim-score {
-    color: #842029;
+  :global(.diag-result__dim[data-red='true'] .diag-result__dim-score) {
+    color: var(--estado-rojo-text);
     font-weight: var(--font-weight-semibold);
   }
 
@@ -300,14 +327,34 @@ const bonusB = preguntasBonus[1];
     color: var(--color-text-primary);
   }
 
+  /* Mismas tarjetas que las opciones del cuestionario, en version compacta.
+     Antes eran radios nativos con texto al lado: dos lenguajes distintos para
+     la misma accion, en la misma pantalla. */
   .diag-result__option {
     display: flex;
     gap: var(--space-3);
     align-items: flex-start;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
     font-size: var(--font-size-sm);
     line-height: 1.45;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     cursor: pointer;
+    transition: background-color var(--motion-control) ease;
+  }
+
+  .diag-result__option:hover {
+    background: color-mix(in srgb, var(--color-accent) 5%, var(--card-bg));
+  }
+
+  .diag-result__option:has(input:checked) {
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--card-bg));
+  }
+
+  .diag-result__option:has(input:focus-visible) {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--space-1);
   }
 
   .diag-result__option input {
@@ -376,9 +423,8 @@ const bonusB = preguntasBonus[1];
 
   .diag-result__pdf {
     padding: var(--space-6);
-    background: var(--color-bg-surface);
-    border-radius: var(--radius-card);
-    border: var(--size-stroke) solid var(--color-border-subtle);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
   }
 
   @media (max-width: 809px) {

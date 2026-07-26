@@ -1,4 +1,6 @@
 ---
+import Kicker from '../ui/Kicker.astro';
+
 // Los datos del cuestionario los importa el <script> de abajo, no este
 // frontmatter: pasarlos con `define:vars` obliga a Astro a servir el script
 // como `is:inline`, y un script inline NO se transpila. Cualquier sintaxis de
@@ -8,7 +10,12 @@
 
 <section class="cuestionario section" aria-labelledby="cuestionario-titulo">
   <div class="cuestionario__inner">
-    <h2 id="cuestionario-titulo" class="cuestionario__titulo">Diagnóstico de presencia digital</h2>
+    <header class="cuestionario__header">
+      <Kicker>Diagnóstico</Kicker>
+      <h2 id="cuestionario-titulo" class="cuestionario__titulo">
+        Cómo te ve alguien que te busca <span class="accent">hoy</span>.
+      </h2>
+    </header>
 
     <div class="cuestionario__progreso">
       <span class="cuestionario__contador" aria-live="polite" id="cuestionario-contador">1 de 12</span>
@@ -26,7 +33,7 @@
       <span class="cuestionario__dimension" aria-live="polite" id="cuestionario-dimension">¿Te encuentran?</span>
     </div>
 
-    <div class="cuestionario__pantalla" id="cuestionario-pantalla" role="region" aria-live="polite" aria-label="Pregunta actual">
+    <div class="cuestionario__pantalla" id="cuestionario-pantalla" tabindex="-1" role="region" aria-live="polite" aria-label="Pregunta actual">
     </div>
 
     <div class="cuestionario__nav">
@@ -46,17 +53,25 @@
   }
 
   .cuestionario__inner {
-    max-width: 600px;
+    max-width: 620px;
     margin: 0 auto;
   }
 
+  /* Encabezado centrado con pill + titular display, igual que el resto de las
+     secciones del sitio. Las preguntas siguen alineadas a la izquierda: en un
+     formulario la lectura manda sobre la composicion. */
+  .cuestionario__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
   .cuestionario__titulo {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-3xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.15;
+    line-height: 1.12;
     letter-spacing: -0.04em;
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-8);
+    margin: var(--space-6) 0 0;
   }
 
   .cuestionario__progreso {
@@ -72,11 +87,17 @@
     color: var(--color-text-secondary);
   }
 
+  /* Pill en arena, como los kickers del sitio. Antes era una etiqueta en
+     mayusculas con tracking: ese eyebrow generico no pertenece a este sistema,
+     que ya tiene su propia forma de etiquetar una seccion. */
   .cuestionario__dimension {
+    align-self: flex-start;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    background: var(--kicker-bg);
+    color: var(--kicker-text);
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-weight: var(--font-control-weight);
   }
 
   .cuestionario__barra {
@@ -98,7 +119,7 @@
     min-height: 12rem;
   }
 
-  .cuestionario__pregunta {
+  :global(.cuestionario__pregunta) {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
@@ -106,7 +127,7 @@
     margin: 0 0 var(--space-2);
   }
 
-  .cuestionario__ayuda {
+  :global(.cuestionario__ayuda) {
     font-size: var(--font-size-sm);
     line-height: 1.5;
     color: var(--color-text-secondary);
@@ -116,7 +137,7 @@
     border-radius: var(--radius-sm);
   }
 
-  .cuestionario__opciones {
+  :global(.cuestionario__opciones) {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -125,15 +146,20 @@
     border: 0;
   }
 
-  .cuestionario__opcion {
+  /* Tarjeta sin borde ni sombra y con el radio de tarjeta del sitio: las
+     cards de QueHacemos y ParaQuien son superficie plana sobre el papel, no
+     cajas delineadas. El borde que tenian estas opciones las delataba como
+     ajenas al sistema. La seleccion se comunica con el indicador y un tinte
+     de acento, nunca solo con color. */
+  :global(.cuestionario__opcion) {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-3);
+    gap: var(--space-4);
     width: 100%;
-    padding: var(--space-4);
+    padding: var(--space-5);
     background: var(--card-bg);
-    border: var(--border-width) solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border: 0;
+    border-radius: var(--card-radius);
     cursor: pointer;
     font: inherit;
     font-size: var(--font-size-base);
@@ -142,20 +168,29 @@
     text-align: left;
     min-height: var(--size-touch);
     transition:
-      border-color var(--motion-control) ease,
-      background-color var(--motion-control) ease;
+      background-color var(--motion-control) ease,
+      transform var(--motion-control) ease;
   }
 
-  .cuestionario__opcion:hover {
-    border-color: color-mix(in srgb, var(--color-text-primary) 20%, transparent);
+  :global(.cuestionario__opcion:hover) {
+    background: color-mix(in srgb, var(--color-accent) 5%, var(--card-bg));
   }
 
-  .cuestionario__opcion--seleccionada {
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 8%, var(--card-bg));
+  /* Empuje fisico al tocar (skill 4.5): confirma el tap antes de que avance. */
+  :global(.cuestionario__opcion:active) {
+    transform: scale(0.99);
   }
 
-  .cuestionario__opcion-indicador {
+  :global(.cuestionario__opcion:focus-visible) {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--space-1);
+  }
+
+  :global(.cuestionario__opcion--seleccionada) {
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--card-bg));
+  }
+
+  :global(.cuestionario__opcion-indicador) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,13 +203,13 @@
     transition: border-color var(--motion-control) ease;
   }
 
-  .cuestionario__opcion--seleccionada .cuestionario__opcion-indicador {
+  :global(.cuestionario__opcion--seleccionada .cuestionario__opcion-indicador) {
     border-color: var(--color-accent);
     background: var(--color-accent);
     box-shadow: inset 0 0 0 3px var(--card-bg);
   }
 
-  .cuestionario__opcion-texto {
+  :global(.cuestionario__opcion-texto) {
     flex: 1;
   }
 
@@ -244,10 +279,13 @@
     }
 
     .cuestionario__titulo {
-      font-size: var(--font-size-lg);
+      /* Igual escala que los titulares de la home en mobile. */
+      font-size: var(--font-size-xl);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
     }
 
-    .cuestionario__pregunta {
+    :global(.cuestionario__pregunta) {
       font-size: var(--font-size-base);
     }
 
@@ -285,6 +323,7 @@
   const respuestas: (number | null)[] = new Array(TOTAL_PREGUNTAS).fill(null);
   let transitionLock = false;
   let startFired = false;
+  let yaNavego = false;
 
   /**
    * Funnel hitos: detail (if any) goes on window for Resultado.
@@ -358,10 +397,14 @@
     });
 
     if (seleccionada !== null) {
+      // Volviendo atras: el foco va a lo que ya habia elegido.
       const selectedBtn = pantalla.querySelector(`[data-indice="${seleccionada}"]`) as HTMLElement | null;
       selectedBtn?.focus();
-    } else {
-      (pantalla.querySelector('.cuestionario__opcion') as HTMLElement | null)?.focus();
+    } else if (yaNavego) {
+      // Pregunta nueva: el foco va a la region, NO a la primera opcion. Enfocar
+      // la primera la pinta con el anillo de foco y se lee como ya elegida.
+      // La region anuncia la pregunta igual y el teclado sigue entrando en orden.
+      pantalla.focus();
     }
   }
 
@@ -387,6 +430,7 @@
       transitionLock = true;
       setTimeout(() => {
         currentIndex++;
+      yaNavego = true;
         transitionLock = false;
         render();
       }, 350);
