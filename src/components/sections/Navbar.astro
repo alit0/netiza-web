@@ -12,17 +12,26 @@ const links = [
   { label: 'Equipo', href: '#equipo-title' },
   { label: 'FAQ', href: '#faq-title' },
 ];
+
+// Estas secciones solo existen en la home. Fuera de ella hay que prefijar la
+// ruta o el link no lleva a ningun lado: el navegador busca un fragmento que
+// no esta en la pagina, no pasa nada y el menu queda abierto. Con el sitio de
+// una sola pagina nunca se noto; con /diagnostico si.
+const enHome = Astro.url.pathname === '/';
+const navHref = (href: string) => (enHome ? href : `/${href}`);
 ---
 
 <header class="navbar">
   <nav class="navbar__inner" aria-label="Navegación principal">
-    <Logo href="#contenido" />
+    {/* Fuera de la home el logo vuelve al inicio, que es lo que espera
+        cualquiera al tocarlo. Dentro de la home sigue subiendo al contenido. */}
+    <Logo href={enHome ? '#contenido' : '/'} />
 
     <div class="navbar__menu" id="navbar-menu">
       <ul class="navbar__links">
         {links.map((link) => (
           <li>
-            <a class="navbar__link" href={link.href}>{link.label}</a>
+            <a class="navbar__link" href={navHref(link.href)}>{link.label}</a>
           </li>
         ))}
       </ul>

@@ -1,5 +1,7 @@
 ---
 import Logo from '../ui/Logo.astro';
+
+// Igual que en el navbar: fuera de la home el logo vuelve al inicio.
 import SocialLinks from '../ui/SocialLinks.astro';
 import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 ---
@@ -7,7 +9,7 @@ import { whatsappUrl, WHATSAPP_MESSAGES } from '../../data/links';
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__brand">
-      <Logo href="#contenido" />
+      <Logo href={Astro.url.pathname === '/' ? '#contenido' : '/'} />
       <p class="footer__tagline">Estrategia digital, web e IA</p>
     </div>
     <p class="footer__location">Mercedes, Buenos Aires, Argentina · Trabajamos con empresas de todo el país</p>
