@@ -27,108 +27,132 @@ const bonusB = preguntasBonus[1];
   data-whatsapp-fallback={whatsappFallback}
 >
   <div class="diag-result__inner">
-    <p class="diag-result__kicker">Resultado</p>
-    <h2 id="diag-result-title" class="diag-result__title">Tu diagnóstico está listo</h2>
+    <header class="diag-result__head">
+      <p class="diag-result__kicker">Resultado</p>
+      <h2 id="diag-result-title" class="diag-result__title">Tu diagnóstico está listo.</h2>
+    </header>
 
-    <div class="diag-result__score-block" data-score-block>
-      <p class="diag-result__overall">
-        <span class="diag-result__overall-label">Puntaje general</span>
-        <span class="diag-result__overall-value" data-overall>—</span>
-        <span class="diag-result__traffic" data-traffic data-state=""></span>
-      </p>
-      <ul class="diag-result__dims" data-dims></ul>
-    </div>
+    <div class="diag-result__lectura">
+      <div class="diag-result__score-block" data-score-block>
+        <p class="diag-result__overall">
+          <span class="diag-result__overall-value" data-overall>—</span>
+          <span class="diag-result__overall-scale">de 100</span>
+          <span class="diag-result__traffic" data-traffic data-state=""></span>
+        </p>
 
-    <!-- Exact copy from DIAGNOSTICO-PREGUNTAS-FINAL.md; markers filled by script. -->
-    <div class="diag-result__copy">
-      <p class="diag-result__lead" data-copy-lead>
-        {/* Todo en una linea a proposito: el minificador de HTML se come los
-            saltos entre elementos inline y las frases quedan pegadas. */}
-        <span data-frase-fuerte>Tus puntos más fuertes están en <strong data-area-verde>[área verde]</strong>.</span> Donde más podés mejorar es en <strong data-area-roja-1>[área roja 1]</strong> y <strong data-area-roja-2>[área roja 2]</strong>.
-      </p>
-      <p class="diag-result__body">
-        Esto no es una nota. Es una foto de hoy. La mayoría de los negocios que arrancan este
-        diagnóstico tienen resultados parecidos al tuyo, y los que mejoran no son los que sacan
-        puntaje perfecto: son los que agarran un área por vez y la trabajan.
-      </p>
-    </div>
+        <!-- Exact copy from DIAGNOSTICO-PREGUNTAS-FINAL.md; markers filled by script. -->
+        <p class="diag-result__lead" data-copy-lead>
+          {/* Todo en una linea a proposito: el minificador de HTML se come los
+              saltos entre elementos inline y las frases quedan pegadas. */}
+          <span data-frase-fuerte>Tus puntos más fuertes están en <strong data-area-verde>[área verde]</strong>.</span> Donde más podés mejorar es en <strong data-area-roja-1>[área roja 1]</strong> y <strong data-area-roja-2>[área roja 2]</strong>.
+        </p>
 
-    <div class="diag-result__cta-copy">
-      <h3 class="diag-result__cta-title">¿Querés saber qué hacer con lo que te salió rojo?</h3>
-      <p class="diag-result__body">
-        Dejame tu nombre y tu mail y te muestro una guía con acciones concretas para cada una de
-        estas áreas, en criollo y sin humo.
-      </p>
-      <p class="diag-result__body">
-        En los próximos días te escribo personalmente para comentarte <strong>una</strong> de las
-        áreas y ver si te sirve darle para adelante. Sin compromiso, sin suscripción, sin spam.
-      </p>
+        <hr class="diag-result__sep" />
+        <ul class="diag-result__dims" data-dims></ul>
+      </div>
+
+      <div class="diag-result__interpretacion">
+        <h3 class="diag-result__sub">Dónde está la palanca</h3>
+        <p class="diag-result__body">
+          Esto no es una nota. Es una foto de hoy. La mayoría de los negocios que arrancan este
+          diagnóstico tienen resultados parecidos al tuyo, y los que mejoran no son los que sacan
+          puntaje perfecto: son los que agarran un área por vez y la trabajan.
+        </p>
+        <div class="diag-result__nota">
+          <p class="diag-result__nota-titulo">Empezá por acá</p>
+          <p class="diag-result__nota-texto">
+            Tu ficha de Google es lo más barato y lo más rápido de arreglar. Es la primera palanca.
+          </p>
+        </div>
+      </div>
     </div>
 
     <form class="diag-result__form" method="POST" novalidate data-diag-form>
-      <p class="diag-result__bonus-intro">Dos últimas, y estas no puntúan.</p>
-
-      <fieldset class="diag-result__fieldset">
-        <legend class="diag-result__legend">A. {bonusA.texto}</legend>
-        {
-          bonusA.opciones.map((label) => (
-            <label class="diag-result__option">
-              <input type="radio" name="20_origen_consultas_ultimos_30_dias" value={label} />
-              <span>{label}</span>
-            </label>
-          ))
-        }
-        <span class="diag-result__error" data-error-for="bonus_a" role="alert"></span>
-      </fieldset>
-
-      <fieldset class="diag-result__fieldset">
-        <legend class="diag-result__legend">B. {bonusB.texto}</legend>
-        {
-          bonusB.opciones.map((label) => (
-            <label class="diag-result__option">
-              <input type="radio" name="21_visibilidad_en_ia" value={label} />
-              <span>{label}</span>
-            </label>
-          ))
-        }
-        <span class="diag-result__error" data-error-for="bonus_b" role="alert"></span>
-      </fieldset>
-
-      <div class="diag-result__field">
-        <label class="diag-result__label" for="diag-nombre">Nombre</label>
-        <input
-          class="diag-result__input"
-          id="diag-nombre"
-          type="text"
-          name="06_nombre"
-          autocomplete="name"
-          required
-        />
-        <span class="diag-result__error" data-error-for="06_nombre" role="alert"></span>
+      <div class="diag-result__bonus-head">
+        <p class="diag-result__bonus-intro">Dos últimas, y estas no puntúan.</p>
+        <span class="diag-result__chip">No suman puntaje</span>
       </div>
 
-      <div class="diag-result__field">
-        <label class="diag-result__label" for="diag-email">Email</label>
-        <input
-          class="diag-result__input"
-          id="diag-email"
-          type="email"
-          name="email"
-          autocomplete="email"
-          inputmode="email"
-          required
-        />
-        <span class="diag-result__error" data-error-for="email" role="alert"></span>
+      <div class="diag-result__bonus-grid">
+        <fieldset class="diag-result__fieldset">
+          <legend class="diag-result__legend"><span class="diag-result__letra">A</span> {bonusA.texto}</legend>
+          {
+            bonusA.opciones.map((label) => (
+              <label class="diag-result__option">
+                <input type="radio" name="20_origen_consultas_ultimos_30_dias" value={label} />
+                <span>{label}</span>
+              </label>
+            ))
+          }
+          <span class="diag-result__error" data-error-for="bonus_a" role="alert"></span>
+        </fieldset>
+
+        <fieldset class="diag-result__fieldset">
+          <legend class="diag-result__legend"><span class="diag-result__letra">B</span> {bonusB.texto}</legend>
+          {
+            bonusB.opciones.map((label) => (
+              <label class="diag-result__option">
+                <input type="radio" name="21_visibilidad_en_ia" value={label} />
+                <span>{label}</span>
+              </label>
+            ))
+          }
+          <span class="diag-result__error" data-error-for="bonus_b" role="alert"></span>
+        </fieldset>
       </div>
 
-      <input class="diag-result__honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <input type="hidden" name="_captcha" value="false" />
+      <!-- Sand band: this is the close, not one more paragraph of the wall. -->
+      <div class="diag-result__captura">
+        <div class="diag-result__captura-copy">
+          <h3 class="diag-result__cta-title">¿Querés saber qué hacer con lo que te salió rojo?</h3>
+          <p class="diag-result__body">
+            Dejame tu nombre y tu mail y te muestro una guía con acciones concretas para cada una de
+            estas áreas, en criollo y sin humo.
+          </p>
+          <p class="diag-result__fine">
+            En los próximos días te escribo personalmente para comentarte <strong>una</strong> de las
+            áreas y ver si te sirve darle para adelante. Sin compromiso, sin suscripción, sin spam.
+          </p>
+        </div>
 
-      {/* Summary + answer fields filled by script in Codex order. */}
-      <div data-hidden-payload hidden></div>
+        <div class="diag-result__captura-form">
+          <div class="diag-result__field">
+            <label class="diag-result__label" for="diag-nombre">Nombre</label>
+            <input
+              class="diag-result__input"
+              id="diag-nombre"
+              type="text"
+              name="06_nombre"
+              autocomplete="name"
+              required
+            />
+            <span class="diag-result__error" data-error-for="06_nombre" role="alert"></span>
+          </div>
 
-      <Button type="submit">Quiero la guía</Button>
-      <p class="diag-result__status" role="status" aria-live="polite"></p>
+          <div class="diag-result__field">
+            <label class="diag-result__label" for="diag-email">Email</label>
+            <input
+              class="diag-result__input"
+              id="diag-email"
+              type="email"
+              name="email"
+              autocomplete="email"
+              inputmode="email"
+              required
+            />
+            <span class="diag-result__error" data-error-for="email" role="alert"></span>
+          </div>
+
+          <input class="diag-result__honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="hidden" name="_captcha" value="false" />
+
+          {/* Summary + answer fields filled by script in Codex order. */}
+          <div data-hidden-payload hidden></div>
+
+          <Button type="submit">Quiero la guía</Button>
+          <p class="diag-result__status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
     </form>
 
     <div class="diag-result__pdf" data-pdf-block hidden>
@@ -147,10 +171,16 @@ const bonusB = preguntasBonus[1];
     padding-block: var(--space-section-y);
   }
 
+  /* 1072 container, matching the rest of the site. The result used to live in
+     a ~440px column floating in the middle of a desktop viewport. */
   .diag-result__inner {
-    max-width: 36rem;
+    max-width: 1072px;
     margin: 0 auto;
     padding-inline: var(--space-6);
+  }
+
+  .diag-result__head {
+    margin-bottom: var(--space-12);
   }
 
   /* Pill en arena como el resto del sitio, no un eyebrow en mayusculas. */
@@ -166,122 +196,213 @@ const bonusB = preguntasBonus[1];
   }
 
   .diag-result__title {
-    margin: 0 0 var(--space-6);
-    font-size: var(--font-size-3xl);
+    margin: 0;
+    max-width: 45rem;
+    font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.15;
+    line-height: 1.05;
     letter-spacing: -0.04em;
     color: var(--color-text-primary);
   }
 
+  /* Score card (620) + reading column (420), 32px gutter. */
+  .diag-result__lectura {
+    display: grid;
+    grid-template-columns: 620fr 420fr;
+    gap: var(--space-8);
+    align-items: start;
+    margin-bottom: var(--space-12);
+  }
+
   .diag-result__score-block {
-    margin-bottom: var(--space-8);
-    padding: var(--space-6);
-    background: var(--card-bg);
+    padding: 2.25rem;
+    background: var(--color-bg-raised);
     border-radius: var(--card-radius);
   }
 
   .diag-result__overall {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-3);
-    margin: 0 0 var(--space-4);
-  }
-
-  .diag-result__overall-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
+    align-items: center;
+    gap: var(--space-4);
+    margin: 0 0 var(--space-2);
   }
 
   .diag-result__overall-value {
-    font-size: var(--font-size-3xl);
-    font-weight: var(--font-weight-semibold);
+    font-size: 4.5rem;
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
     color: var(--color-text-primary);
     letter-spacing: -0.04em;
   }
 
-  .diag-result__traffic {
-    font-size: var(--font-size-sm);
+  .diag-result__overall-scale {
+    flex: 1;
+    font-size: var(--font-size-md);
+    line-height: 1.2;
+    color: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
+  }
+
+  .diag-result__sep {
+    height: 1px;
+    margin: var(--space-7) 0;
+    border: 0;
+    background: var(--meter-track-bg);
+  }
+
+  .diag-result__interpretacion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .diag-result__sub {
+    margin: 0;
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
-    padding: var(--space-1) var(--space-3);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+  }
+
+  .diag-result__nota {
+    padding: var(--space-5);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-sm);
+  }
+
+  .diag-result__nota-titulo {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    color: var(--color-state-danger-text);
+  }
+
+  .diag-result__nota-texto {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .diag-result__traffic {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-full);
     text-transform: capitalize;
   }
 
-  /* Estados semanticos armonizados con la paleta calida del sitio. El token
-     system no tiene colores de estado porque hasta ahora nada los necesitaba;
-     estos son los unicos, viven aca y se derivan de la marca. Los valores que
-     habia eran los de alerta por defecto de Bootstrap (#198754, #ffc107,
-     #dc3545): correctos en abstracto y ajenos a este sitio.
+  /* Estados semanticos armonizados con la paleta calida del sitio. Viven en
+     tokens.css (--color-state-*) porque tambien los consume el diseno en
+     Penpot: un solo lugar define que rojo es "rojo". Los valores que habia
+     originalmente eran los de alerta por defecto de Bootstrap (#198754,
+     #ffc107, #dc3545): correctos en abstracto y ajenos a este sitio.
      El rojo usa el acento de marca, asi la pagina mantiene una sola familia.
      El color nunca comunica solo: la etiqueta dice el estado en palabras. */
-  .diag-result {
-    --estado-verde-text: #3d5a3a;
-    --estado-verde-bg: color-mix(in srgb, #3d5a3a 14%, transparent);
-    --estado-amarillo-text: #7a5a12;
-    --estado-amarillo-bg: color-mix(in srgb, var(--color-base-sand-light) 70%, transparent);
-    --estado-rojo-text: var(--color-base-accent-strong);
-    --estado-rojo-bg: color-mix(in srgb, var(--color-base-accent) 14%, transparent);
-  }
-
-  [data-theme='dark'] .diag-result {
-    --estado-verde-text: #a8c9a3;
-    --estado-verde-bg: color-mix(in srgb, #a8c9a3 16%, transparent);
-    --estado-amarillo-text: #e0c07a;
-    --estado-amarillo-bg: color-mix(in srgb, #e0c07a 16%, transparent);
-    --estado-rojo-text: #f7a07a;
-    --estado-rojo-bg: color-mix(in srgb, var(--color-base-accent) 22%, transparent);
-  }
-
   .diag-result__traffic[data-state='verde'] {
-    color: var(--estado-verde-text);
-    background: var(--estado-verde-bg);
+    color: var(--color-state-success-text);
+    background: var(--color-state-success-bg);
   }
 
   .diag-result__traffic[data-state='amarillo'] {
-    color: var(--estado-amarillo-text);
-    background: var(--estado-amarillo-bg);
+    color: var(--color-state-warning-text);
+    background: var(--color-state-warning-bg);
   }
 
   .diag-result__traffic[data-state='rojo'] {
-    color: var(--estado-rojo-text);
-    background: var(--estado-rojo-bg);
+    color: var(--color-state-danger-text);
+    background: var(--color-state-danger-bg);
   }
 
+  /* Meters, not a spreadsheet. A diagnosis has to be readable at a glance, and
+     the bar carries the same value the number does. */
   :global(.diag-result__dims) {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-5);
   }
 
   :global(.diag-result__dim) {
     display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  :global(.diag-result__dim-head) {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: var(--space-4);
     font-size: var(--font-size-sm);
+    line-height: 1.2;
     color: var(--color-text-primary);
   }
 
-  :global(.diag-result__dim[data-red='true'] .diag-result__dim-score) {
-    color: var(--estado-rojo-text);
+  :global(.diag-result__dim-label) {
+    font-weight: var(--font-weight-medium);
+  }
+
+  :global(.diag-result__dim-score) {
     font-weight: var(--font-weight-semibold);
   }
 
-  .diag-result__copy,
-  .diag-result__cta-copy {
-    margin-bottom: var(--space-8);
+  /* Both are spans (valid inside a <li> flow) so they need an explicit box —
+     an inline element ignores width and height and the bar renders at zero. */
+  :global(.diag-result__dim-track) {
+    display: block;
+    height: var(--meter-height);
+    background: var(--meter-track-bg);
+    border-radius: var(--meter-radius);
+    overflow: hidden;
+  }
+
+  :global(.diag-result__dim-fill) {
+    display: block;
+    height: 100%;
+    border-radius: var(--meter-radius);
+  }
+
+  :global(.diag-result__dim-head) {
+    display: flex;
+  }
+
+  /* Colour follows the same traffic light as the overall chip. One custom
+     property per row feeds both the number and the bar. */
+  :global(.diag-result__dim[data-state='verde']) {
+    --dim-color: var(--color-state-success-text);
+  }
+
+  :global(.diag-result__dim[data-state='amarillo']) {
+    --dim-color: var(--color-state-warning-text);
+  }
+
+  :global(.diag-result__dim[data-state='rojo']) {
+    --dim-color: var(--color-state-danger-text);
+  }
+
+  :global(.diag-result__dim-score) {
+    color: var(--dim-color, var(--color-text-primary));
+  }
+
+  :global(.diag-result__dim-fill) {
+    background: var(--dim-color, var(--color-accent));
   }
 
   .diag-result__lead,
   .diag-result__body {
-    margin: 0 0 var(--space-4);
-    font-size: var(--font-size-md);
-    line-height: 1.55;
+    margin: 0;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
     color: var(--color-text-secondary);
+  }
+
+  .diag-result__lead {
+    font-size: var(--font-size-md);
+    line-height: 1.45;
   }
 
   .diag-result__lead strong {
@@ -289,10 +410,19 @@ const bonusB = preguntasBonus[1];
     font-weight: var(--font-weight-semibold);
   }
 
+  .diag-result__fine {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text-primary) 60%, transparent);
+  }
+
   .diag-result__cta-title {
-    margin: 0 0 var(--space-4);
-    font-size: var(--font-size-xl);
+    margin: 0;
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-medium);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
     color: var(--color-text-primary);
   }
 
@@ -300,44 +430,82 @@ const bonusB = preguntasBonus[1];
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    margin-bottom: var(--space-8);
+  }
+
+  .diag-result__bonus-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   .diag-result__bonus-intro {
     margin: 0;
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
+    line-height: 1.3;
     color: var(--color-text-primary);
+  }
+
+  .diag-result__chip {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+    color: var(--color-text-primary);
+  }
+
+  /* Bonus questions sit at the SAME scale as the questionnaire. They used to
+     be visibly smaller, which read as a different, lesser control. */
+  .diag-result__bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+    align-items: start;
   }
 
   .diag-result__fieldset {
     margin: 0;
-    padding: 0;
+    padding: var(--space-7);
     border: 0;
+    border-radius: var(--card-radius);
+    background: var(--card-bg);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: 10px;
   }
 
   .diag-result__legend {
+    float: left;
+    width: 100%;
     padding: 0;
     margin: 0 0 var(--space-2);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
     color: var(--color-text-primary);
   }
 
-  /* Mismas tarjetas que las opciones del cuestionario, en version compacta.
-     Antes eran radios nativos con texto al lado: dos lenguajes distintos para
-     la misma accion, en la misma pantalla. */
+  .diag-result__letra {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    color: var(--color-state-danger-text);
+  }
+
+  /* Same option component as the questionnaire, same scale. */
   .diag-result__option {
     display: flex;
-    gap: var(--space-3);
-    align-items: flex-start;
-    padding: var(--space-3) var(--space-4);
-    background: var(--card-bg);
-    border-radius: var(--card-radius);
-    font-size: var(--font-size-sm);
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--option-padding-block) var(--option-padding-inline);
+    background: var(--option-bg);
+    border-radius: var(--option-radius);
+    font-size: var(--font-size-base);
     line-height: 1.45;
     color: var(--color-text-primary);
     cursor: pointer;
@@ -345,11 +513,35 @@ const bonusB = preguntasBonus[1];
   }
 
   .diag-result__option:hover {
-    background: color-mix(in srgb, var(--color-accent) 5%, var(--card-bg));
+    background: color-mix(in srgb, var(--color-accent) 5%, var(--option-bg));
   }
 
   .diag-result__option:has(input:checked) {
-    background: color-mix(in srgb, var(--color-accent) 10%, var(--card-bg));
+    background: var(--option-bg-selected);
+    color: var(--option-text-selected);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Sand band: reads as the close, not as one more paragraph. */
+  .diag-result__captura {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+    align-items: start;
+    padding: 2.75rem;
+    border-radius: var(--card-radius);
+    background: var(--color-bg-sunken);
+  }
+
+  .diag-result__captura-copy,
+  .diag-result__captura-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .diag-result__captura-form {
+    gap: var(--space-5);
   }
 
   .diag-result__option:has(input:focus-visible) {
@@ -357,9 +549,28 @@ const bonusB = preguntasBonus[1];
     outline-offset: var(--space-1);
   }
 
+  /* Same indicator as the questionnaire. The native radio rendered as a solid
+     white dot on dark, so the two screens spoke different languages for the
+     same control. */
   .diag-result__option input {
-    margin-top: 0.2em;
+    appearance: none;
+    -webkit-appearance: none;
+    width: var(--radio-size);
+    height: var(--radio-size);
     flex-shrink: 0;
+    margin: 0;
+    border: 1.5px solid var(--color-text-primary);
+    border-radius: var(--radius-full);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      border-color var(--motion-control) ease,
+      background-color var(--motion-control) ease;
+  }
+
+  .diag-result__option input:checked {
+    border: 6px solid var(--option-radio-selected);
+    background: var(--option-radio-selected);
   }
 
   .diag-result__field {
@@ -374,18 +585,22 @@ const bonusB = preguntasBonus[1];
     color: var(--color-text-primary);
   }
 
+  /* Pill inputs on the sand band, matching the board: raised surface, full
+     radius, no border. On sand a border only adds noise. */
   .diag-result__input {
     width: 100%;
-    padding: var(--space-3) var(--space-4);
+    padding: 1.125rem var(--space-6);
     font: inherit;
     font-size: var(--font-size-base);
+    line-height: 1.4;
     color: var(--color-text-primary);
-    background: var(--color-bg-surface);
-    border: var(--size-stroke) solid color-mix(in srgb, var(--color-text-primary) 16%, transparent);
-    border-radius: var(--radius-md);
-    box-shadow:
-      0 1px 2px color-mix(in srgb, var(--color-base-ink) 6%, transparent),
-      0 4px 10px color-mix(in srgb, var(--color-base-ink) 8%, transparent);
+    background: var(--color-bg-raised);
+    border: 0;
+    border-radius: var(--radius-full);
+  }
+
+  .diag-result__input::placeholder {
+    color: color-mix(in srgb, var(--color-text-primary) 38%, transparent);
   }
 
   .diag-result__input:focus-visible {
@@ -427,10 +642,68 @@ const bonusB = preguntasBonus[1];
     border-radius: var(--card-radius);
   }
 
+  /* One column below the two-column breakpoint. */
+  @media (max-width: 1119px) {
+    .diag-result__lectura,
+    .diag-result__bonus-grid,
+    .diag-result__captura {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .diag-result__inner {
+      max-width: 620px;
+    }
+
+    .diag-result__captura {
+      gap: var(--space-6);
+    }
+  }
+
   @media (max-width: 809px) {
+    .diag-result__head {
+      margin-bottom: var(--space-8);
+    }
+
     .diag-result__title {
+      font-size: var(--font-size-2xl);
+      line-height: 1.1;
+    }
+
+    .diag-result__score-block {
+      padding: var(--space-5);
+    }
+
+    .diag-result__overall-value {
+      font-size: 3.5rem;
+    }
+
+    .diag-result__overall-scale {
+      font-size: var(--font-size-sm);
+    }
+
+    .diag-result__cta-title {
       font-size: var(--font-size-xl);
-      line-height: 1.12;
+    }
+
+    /* Ale stripped the box off the bonus cards on mobile — the questions carry
+       themselves and the options are already surfaces. */
+    .diag-result__fieldset {
+      padding: 0;
+      background: transparent;
+      gap: var(--space-2);
+    }
+
+    .diag-result__legend {
+      font-size: var(--font-size-base);
+    }
+
+    .diag-result__captura {
+      padding: var(--space-6);
+    }
+
+    .diag-result__lectura,
+    .diag-result__bonus-grid {
+      gap: var(--space-6);
     }
   }
 </style>
@@ -440,6 +713,7 @@ const bonusB = preguntasBonus[1];
     buildInboxFields,
     resolveResultCopy,
     scoreFromRespuestas,
+    trafficFromOverall,
   } from '../../lib/diagnosticoScore';
 
   const root = document.getElementById('diagnostico-resultado');
@@ -518,7 +792,18 @@ const bonusB = preguntasBonus[1];
           const li = document.createElement('li');
           li.className = 'diag-result__dim';
           li.dataset.red = dim.isRed ? 'true' : 'false';
-          li.innerHTML = `<span>${dim.label}</span><span class="diag-result__dim-score">${dim.score}</span>`;
+          // Same traffic light as the overall chip, so a row never disagrees
+          // with the headline colour.
+          li.dataset.state = trafficFromOverall(dim.score);
+          const pct = Math.max(0, Math.min(100, dim.score));
+          li.innerHTML =
+            `<span class="diag-result__dim-head">` +
+            `<span class="diag-result__dim-label">${dim.label}</span>` +
+            `<span class="diag-result__dim-score">${dim.score}</span>` +
+            `</span>` +
+            `<span class="diag-result__dim-track">` +
+            `<span class="diag-result__dim-fill" style="width:${pct}%"></span>` +
+            `</span>`;
           dimsList.appendChild(li);
         }
       }

@@ -9,16 +9,47 @@ import Kicker from '../ui/Kicker.astro';
 ---
 
 <section id="cuestionario" class="cuestionario section" aria-labelledby="cuestionario-titulo">
-  <div class="cuestionario__inner">
-    <header class="cuestionario__header">
+  <div class="cuestionario__grid">
+    <!-- Persistent context: stays put while the panel on the right advances. -->
+    <aside class="cuestionario__contexto">
       <Kicker>Diagnóstico</Kicker>
       <h2 id="cuestionario-titulo" class="cuestionario__titulo">
         Cómo te ve alguien que te busca <span class="accent">hoy</span>.
       </h2>
-    </header>
+      <p class="cuestionario__bajada">
+        12 preguntas, 3 minutos. Al final ves en qué estás parado y qué conviene tocar primero.
+      </p>
 
-    <div class="cuestionario__progreso">
-      <span class="cuestionario__contador" aria-live="polite" id="cuestionario-contador">1 de 12</span>
+      <ol class="cuestionario__bloques" id="cuestionario-bloques">
+        <li class="cuestionario__bloque" data-dimension="encuentran">
+          <span class="cuestionario__bloque-marca" aria-hidden="true"></span>
+          <span class="cuestionario__bloque-nombre">Te encuentran</span>
+          <span class="cuestionario__bloque-conteo" data-conteo>0/3</span>
+        </li>
+        <li class="cuestionario__bloque" data-dimension="entienden">
+          <span class="cuestionario__bloque-marca" aria-hidden="true"></span>
+          <span class="cuestionario__bloque-nombre">Te entienden</span>
+          <span class="cuestionario__bloque-conteo" data-conteo>0/3</span>
+        </li>
+        <li class="cuestionario__bloque" data-dimension="escriben">
+          <span class="cuestionario__bloque-marca" aria-hidden="true"></span>
+          <span class="cuestionario__bloque-nombre">Te escriben</span>
+          <span class="cuestionario__bloque-conteo" data-conteo>0/3</span>
+        </li>
+        <li class="cuestionario__bloque" data-dimension="eligen">
+          <span class="cuestionario__bloque-marca" aria-hidden="true"></span>
+          <span class="cuestionario__bloque-nombre">Te siguen eligiendo</span>
+          <span class="cuestionario__bloque-conteo" data-conteo>0/3</span>
+        </li>
+      </ol>
+    </aside>
+
+    <div class="cuestionario__panel">
+      <div class="cuestionario__meta">
+        <span class="cuestionario__contador" aria-live="polite" id="cuestionario-contador">Pregunta 1 de 12</span>
+        <span class="cuestionario__dimension" aria-live="polite" id="cuestionario-dimension">¿Te encuentran?</span>
+      </div>
+
       <div
         class="cuestionario__barra"
         role="progressbar"
@@ -30,80 +61,147 @@ import Kicker from '../ui/Kicker.astro';
       >
         <div class="cuestionario__barra-fill" id="cuestionario-barra-fill" style="width: 8.3%"></div>
       </div>
-      <span class="cuestionario__dimension" aria-live="polite" id="cuestionario-dimension">¿Te encuentran?</span>
-    </div>
 
-    <div class="cuestionario__pantalla" id="cuestionario-pantalla" tabindex="-1" role="region" aria-live="polite" aria-label="Pregunta actual">
-    </div>
+      <div class="cuestionario__pantalla" id="cuestionario-pantalla" tabindex="-1" role="region" aria-live="polite" aria-label="Pregunta actual">
+      </div>
 
-    <div class="cuestionario__nav">
-      <button class="cuestionario__nav-btn cuestionario__nav-btn--prev" id="cuestionario-prev" type="button" disabled>
-        Anterior
-      </button>
-      <span class="cuestionario__paso" id="cuestionario-paso" aria-hidden="true"></span>
-      <span class="cuestionario__nav-spacer" aria-hidden="true"></span>
+      <div class="cuestionario__nav">
+        <button class="cuestionario__nav-btn cuestionario__nav-btn--prev" id="cuestionario-prev" type="button" disabled>
+          Anterior
+        </button>
+        <span class="cuestionario__paso" id="cuestionario-paso" aria-hidden="true"></span>
+        <span class="cuestionario__nota">Se guarda solo. Podés volver atrás.</span>
+      </div>
     </div>
   </div>
-
 </section>
 
 <style>
+  /* Layout mirrors the Penpot board: 400 + 608 with a 64px gutter inside the
+     1072 container, both columns top-aligned. Mobile collapses to one column
+     and drops the context panel, which is orientation, not content. */
   .cuestionario {
     padding-block: var(--space-section-y);
   }
 
-  .cuestionario__inner {
-    max-width: 620px;
-    margin: 0 auto;
+  .cuestionario__grid {
+    display: grid;
+    grid-template-columns: 400px 608px;
+    gap: var(--space-16);
+    justify-content: center;
+    align-items: start;
   }
 
-  /* Encabezado centrado con pill + titular display, igual que el resto de las
-     secciones del sitio. Las preguntas siguen alineadas a la izquierda: en un
-     formulario la lectura manda sobre la composicion. */
-  .cuestionario__header {
-    text-align: center;
-    margin-bottom: var(--space-12);
+  .cuestionario__contexto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
   }
 
   .cuestionario__titulo {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.12;
+    line-height: 1.05;
     letter-spacing: -0.04em;
     color: var(--color-text-primary);
-    margin: var(--space-6) 0 0;
+    margin: 0;
   }
 
-  .cuestionario__progreso {
+  .cuestionario__bajada {
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Block tracker: the anchor while the panel advances. */
+  .cuestionario__bloques {
+    list-style: none;
+    width: 100%;
+    margin: var(--space-5) 0 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-    margin-bottom: var(--space-8);
+    gap: 2px;
+  }
+
+  .cuestionario__bloque {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: var(--space-3) var(--space-4) var(--space-3) 14px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    line-height: 1.2;
+    color: color-mix(in srgb, var(--color-text-primary) 45%, transparent);
+  }
+
+  .cuestionario__bloque[data-activo] {
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .cuestionario__bloque-marca {
+    width: 3px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-text-primary) 15%, transparent);
+  }
+
+  .cuestionario__bloque[data-activo] .cuestionario__bloque-marca {
+    background: var(--color-accent);
+  }
+
+  .cuestionario__bloque-nombre {
+    flex: 1;
+  }
+
+  .cuestionario__bloque-conteo {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: color-mix(in srgb, var(--color-text-primary) 30%, transparent);
+  }
+
+  .cuestionario__bloque[data-activo] .cuestionario__bloque-conteo {
+    color: color-mix(in srgb, var(--color-text-primary) 60%, transparent);
+  }
+
+  /* The panel is the only surface on this screen besides the options. */
+  .cuestionario__panel {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: var(--space-8);
+  }
+
+  .cuestionario__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
   }
 
   .cuestionario__contador {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
+    line-height: 1.2;
+    color: color-mix(in srgb, var(--color-text-primary) 60%, transparent);
   }
 
-  /* Pill en arena, como los kickers del sitio. Antes era una etiqueta en
-     mayusculas con tracking: ese eyebrow generico no pertenece a este sistema,
-     que ya tiene su propia forma de etiquetar una seccion. */
   .cuestionario__dimension {
-    align-self: flex-start;
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-full);
-    background: var(--kicker-bg);
-    color: var(--kicker-text);
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-control-weight);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    color: var(--color-state-danger-text);
   }
 
   .cuestionario__barra {
     width: 100%;
-    height: 4px;
-    background: var(--color-border-subtle);
+    height: 6px;
+    margin-top: 14px;
+    background: var(--meter-track-bg);
     border-radius: var(--radius-full);
     overflow: hidden;
   }
@@ -117,31 +215,30 @@ import Kicker from '../ui/Kicker.astro';
 
   .cuestionario__pantalla {
     min-height: 12rem;
+    margin-top: var(--space-7);
   }
 
   :global(.cuestionario__pregunta) {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.3;
+    letter-spacing: -0.04em;
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-2);
+    margin: 0;
   }
 
   :global(.cuestionario__ayuda) {
     font-size: var(--font-size-sm);
     line-height: 1.5;
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-5);
-    padding: var(--space-3) var(--space-4);
-    background: var(--kicker-bg);
-    border-radius: var(--radius-sm);
+    margin: var(--space-3) 0 0;
   }
 
   :global(.cuestionario__opciones) {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    margin: 0 0 var(--space-6);
+    margin: var(--space-6) 0 0;
     padding: 0;
     border: 0;
   }
@@ -153,17 +250,19 @@ import Kicker from '../ui/Kicker.astro';
      de acento, nunca solo con color. */
   :global(.cuestionario__opcion) {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-4);
     width: 100%;
-    padding: var(--space-5);
-    background: var(--card-bg);
+    padding: var(--option-padding-block) var(--option-padding-inline);
+    /* Raised, not surface: --card-bg sits a hair away from the canvas and the
+       options read as ghosts. They have to look tappable. */
+    background: var(--option-bg);
     border: 0;
-    border-radius: var(--card-radius);
+    border-radius: var(--option-radius);
     cursor: pointer;
     font: inherit;
     font-size: var(--font-size-base);
-    line-height: 1.5;
+    line-height: 1.45;
     color: var(--color-text-primary);
     text-align: left;
     min-height: var(--size-touch);
@@ -173,7 +272,7 @@ import Kicker from '../ui/Kicker.astro';
   }
 
   :global(.cuestionario__opcion:hover) {
-    background: color-mix(in srgb, var(--color-accent) 5%, var(--card-bg));
+    background: color-mix(in srgb, var(--color-accent) 5%, var(--option-bg));
   }
 
   /* Empuje fisico al tocar (skill 4.5): confirma el tap antes de que avance. */
@@ -186,27 +285,32 @@ import Kicker from '../ui/Kicker.astro';
     outline-offset: var(--space-1);
   }
 
+  /* Chosen answer reads as "done", not as a score. Same green in both themes,
+     so the answered state never shifts meaning between light and dark. */
   :global(.cuestionario__opcion--seleccionada) {
-    background: color-mix(in srgb, var(--color-accent) 10%, var(--card-bg));
+    background: var(--option-bg-selected);
+    color: var(--option-text-selected);
+    font-weight: var(--font-weight-medium);
   }
 
   :global(.cuestionario__opcion-indicador) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: var(--radio-size);
+    height: var(--radio-size);
     flex-shrink: 0;
-    margin-top: 1px;
     border-radius: var(--radius-full);
-    border: 2px solid var(--color-text-muted);
-    transition: border-color var(--motion-control) ease;
+    border: 1.5px solid var(--color-text-primary);
+    transition:
+      border-color var(--motion-control) ease,
+      background-color var(--motion-control) ease;
   }
 
+  /* A 6px ring reads as a filled dot with a hairline of green around it. */
   :global(.cuestionario__opcion--seleccionada .cuestionario__opcion-indicador) {
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-    box-shadow: inset 0 0 0 3px var(--card-bg);
+    border: 6px solid var(--option-radio-selected);
+    background: var(--option-radio-selected);
   }
 
   :global(.cuestionario__opcion-texto) {
@@ -216,8 +320,15 @@ import Kicker from '../ui/Kicker.astro';
   .cuestionario__nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-4);
-    margin-top: var(--space-8);
+    margin-top: var(--space-7);
+  }
+
+  .cuestionario__nota {
+    font-size: var(--font-size-xs);
+    line-height: 1.3;
+    color: color-mix(in srgb, var(--color-text-primary) 45%, transparent);
   }
 
   .cuestionario__nav-btn {
@@ -251,15 +362,16 @@ import Kicker from '../ui/Kicker.astro';
     outline-offset: var(--space-1);
   }
 
-  .cuestionario__nav-spacer {
-    width: 88px;
-  }
-
+  /* The step count lives in the panel header now. Keeping it here too put
+     "1 de 12" on screen twice. Hidden, not deleted: the script still writes to
+     it and it stays available to assistive tech. */
   .cuestionario__paso {
-    flex: 1;
-    text-align: center;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .cuestionario__completado {
@@ -273,20 +385,54 @@ import Kicker from '../ui/Kicker.astro';
     margin: 0;
   }
 
+  /* Below the two-column breakpoint the context panel is dropped: it is
+     orientation, not content, and the counter above the question already says
+     where you are. The panel loses its surface so the options are the only
+     boxes left on screen. */
+  @media (max-width: 1119px) {
+    .cuestionario__grid {
+      grid-template-columns: minmax(0, 620px);
+      gap: var(--space-8);
+    }
+
+    .cuestionario__bajada,
+    .cuestionario__bloques {
+      display: none;
+    }
+
+    .cuestionario__panel {
+      background: transparent;
+      padding: 0;
+    }
+
+    .cuestionario__meta {
+      margin-top: var(--space-6);
+    }
+  }
+
   @media (max-width: 809px) {
-    .cuestionario__inner {
+    .cuestionario__grid {
       padding-inline: var(--space-6);
     }
 
     .cuestionario__titulo {
-      /* Igual escala que los titulares de la home en mobile. */
-      font-size: var(--font-size-xl);
-      line-height: 1.12;
-      letter-spacing: -0.05em;
+      font-size: var(--font-size-2xl);
+      line-height: 1.1;
     }
 
     :global(.cuestionario__pregunta) {
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-lg);
+      line-height: 1.35;
+      letter-spacing: normal;
+    }
+
+    .cuestionario__contador,
+    .cuestionario__dimension {
+      font-size: var(--font-size-xs);
+    }
+
+    :global(.cuestionario__opciones) {
+      gap: 10px;
     }
 
     .cuestionario__pantalla {
@@ -318,6 +464,9 @@ import Kicker from '../ui/Kicker.astro';
   const barraFill = document.getElementById('cuestionario-barra-fill')!;
   const prevBtn = document.getElementById('cuestionario-prev') as HTMLButtonElement;
   const paso = document.getElementById('cuestionario-paso')!;
+  const bloques = Array.from(
+    document.querySelectorAll<HTMLElement>('#cuestionario-bloques .cuestionario__bloque')
+  );
 
   let currentIndex = 0;
   const respuestas: (number | null)[] = new Array(TOTAL_PREGUNTAS).fill(null);
@@ -341,11 +490,35 @@ import Kicker from '../ui/Kicker.astro';
 
   function actualizarProgreso() {
     const n = currentIndex + 1;
-    contador.textContent = `${n} de ${TOTAL_PREGUNTAS}`;
-    dimension.textContent = DIMENSIONES[preguntas[currentIndex].dimension] ?? '';
+    const dimActual = preguntas[currentIndex].dimension;
+    contador.textContent = `Pregunta ${n} de ${TOTAL_PREGUNTAS}`;
+    dimension.textContent = DIMENSIONES[dimActual] ?? '';
     barra.setAttribute('aria-valuenow', String(n));
     const pct = ((n / TOTAL_PREGUNTAS) * 100).toFixed(1);
     barraFill.style.width = `${pct}%`;
+    actualizarBloques(dimActual);
+  }
+
+  /** Highlights the current block and counts answers within each one. */
+  function actualizarBloques(dimActual: string) {
+    bloques.forEach((li) => {
+      const dim = li.getAttribute('data-dimension');
+      if (!dim) return;
+
+      if (dim === dimActual) {
+        li.setAttribute('data-activo', '');
+      } else {
+        li.removeAttribute('data-activo');
+      }
+
+      const indices = preguntas
+        .map((p: { dimension: string }, i: number) => (p.dimension === dim ? i : -1))
+        .filter((i: number) => i >= 0);
+      const respondidas = indices.filter((i: number) => respuestas[i] !== null).length;
+
+      const conteo = li.querySelector('[data-conteo]');
+      if (conteo) conteo.textContent = `${respondidas}/${indices.length}`;
+    });
   }
 
   function render() {
