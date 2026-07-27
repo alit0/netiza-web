@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'primary' | 'ghost';
+  variant?: 'primary' | 'ghost' | 'whatsapp';
   href?: string;
   type?: 'button' | 'submit' | 'reset';
   target?: string;
@@ -73,6 +73,12 @@ const {
     border-color: var(--button-ghost-border);
     background: var(--button-ghost-bg);
     color: var(--button-ghost-text);
+  }
+
+  .button--whatsapp {
+    border-color: var(--button-whatsapp-bg);
+    background: var(--button-whatsapp-bg);
+    color: var(--button-whatsapp-text);
   }
 
   .button:hover {

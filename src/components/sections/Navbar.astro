@@ -36,7 +36,7 @@ const navHref = (href: string) => (enHome ? href : `/${href}`);
         ))}
       </ul>
       <div class="navbar__menu-cta">
-        <Button href={whatsappUrl(WHATSAPP_MESSAGES.navbar)} target="_blank" rel="noopener">WhatsApp</Button>
+        <Button variant="whatsapp" href={whatsappUrl(WHATSAPP_MESSAGES.navbar)} target="_blank" rel="noopener">WhatsApp</Button>
         <SocialLinks class="navbar__social" />
       </div>
     </div>

@@ -23,10 +23,13 @@
   --color-base-danger-light: var(--color-base-accent-strong);
   --color-base-danger-dark: #F7A07A;
 
+  /* Deep green, one value with two jobs: the WhatsApp button and the chosen
+     answer. Declared once so they can never drift apart. */
+  --color-base-green-deep: #075E54;
   /* Chosen-answer green. Reads as "done", not as a score — it is deliberately
      outside the state ramp above. Same value in both themes. */
   --color-base-selected: #A0DEC1;
-  --color-base-selected-ink: #075E54;
+  --color-base-selected-ink: var(--color-base-green-deep);
 
   --font-family-sans: "Inter", sans-serif;
   --font-family-serif: "Source Serif 4", serif;
@@ -43,6 +46,9 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  /* Self-hosted in fonts.css. Without the real 900 face the browser fakes it
+     by smearing the 700, which ruins the display tracking. */
+  --font-weight-black: 900;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -97,6 +103,7 @@
 
   --font-body: var(--font-family-sans);
   --font-display-accent: var(--font-family-serif);
+  --font-display-weight: var(--font-weight-black);
   --font-control-size: var(--font-size-sm);
   --font-kicker-size: var(--font-size-sm);
   --font-control-weight: var(--font-weight-semibold);
@@ -144,6 +151,7 @@
 
   --font-body: var(--font-family-sans);
   --font-display-accent: var(--font-family-serif);
+  --font-display-weight: var(--font-weight-black);
   --font-control-size: var(--font-size-sm);
   --font-kicker-size: var(--font-size-sm);
   --font-control-weight: var(--font-weight-semibold);
@@ -168,6 +176,11 @@
 :root {
   --button-primary-bg: var(--color-action-primary-bg);
   --button-primary-text: var(--color-action-primary-text);
+  /* Only the navbar's explicit "Hablar por WhatsApp" is green. The other CTAs
+     also open WhatsApp but stay on the brand accent — the green marks the
+     channel, not the destination. Same colour in both themes. */
+  --button-whatsapp-bg: var(--color-base-green-deep);
+  --button-whatsapp-text: var(--color-base-white);
   --button-ghost-bg: var(--color-action-ghost-bg);
   --button-ghost-text: var(--color-action-ghost-text);
   --button-ghost-border: var(--color-action-ghost-border);

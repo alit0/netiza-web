@@ -1,3 +1,11 @@
+/* Display weight for every heading. Component classes set it explicitly too;
+   this covers any h1/h2 that ships without one. Inter 900 is self-hosted in
+   fonts.css — without the real face the browser would fake the weight. */
+h1,
+h2 {
+  font-weight: var(--font-display-weight);
+}
+
 .accent {
   font-family: var(--font-display-accent);
   font-style: italic;
