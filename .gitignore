@@ -11,3 +11,7 @@ kilo.json
 originales/
 __pycache__/
 *.pyc
+
+# Config backups keep the same secrets the originals do (kilo.json is ignored
+# above for exactly that reason). Rotation scripts leave .bak-<timestamp> files.
+*.bak-*

@@ -6,11 +6,27 @@
   --color-base-paper-dark: #161412;
   --color-base-surface-light: #F7F2EA;
   --color-base-surface-dark: #211E1A;
+  --color-base-raised-light: #FFFFFF;
+  --color-base-raised-dark: #322C25;
   --color-base-sand-light: #E7D7C1;
   --color-base-sand-dark: #2C2620;
   --color-base-accent: #F15A24;
   --color-base-accent-strong: #C2410C;
   --color-base-white: #FFFFFF;
+
+  /* State hues, warmed to the brand palette instead of default alert colors.
+     Danger reuses the brand accent so the page keeps a single color family. */
+  --color-base-success-light: #3D5A3A;
+  --color-base-success-dark: #A8C9A3;
+  --color-base-warning-light: #7A5A12;
+  --color-base-warning-dark: #E0C07A;
+  --color-base-danger-light: var(--color-base-accent-strong);
+  --color-base-danger-dark: #F7A07A;
+
+  /* Chosen-answer green. Reads as "done", not as a score — it is deliberately
+     outside the state ramp above. Same value in both themes. */
+  --color-base-selected: #A0DEC1;
+  --color-base-selected-ink: #075E54;
 
   --font-family-sans: "Inter", sans-serif;
   --font-family-serif: "Source Serif 4", serif;
@@ -20,6 +36,7 @@
   --font-size-md: 1.125rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
   --font-size-3xl: 2.5rem;
   --font-size-4xl: 2.875rem;
   --font-size-5xl: 3.5rem;
@@ -41,8 +58,10 @@
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
   --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
   --radius-full: 999rem;
   --size-touch: 2.75rem;
+  --size-dot: 1.25rem;
   --size-logo-height: 1.625rem;
   --size-border: 0.0625rem;
   --size-focus-ring: 0.1875rem;
@@ -54,6 +73,7 @@
 [data-theme="light"] {
   --color-bg-canvas: var(--color-base-paper-light);
   --color-bg-surface: var(--color-base-surface-light);
+  --color-bg-raised: var(--color-base-raised-light);
   --color-bg-sunken: var(--color-base-sand-light);
   --color-text-primary: var(--color-base-ink);
   --color-text-secondary: color-mix(in srgb, var(--color-base-ink) 72%, transparent);
@@ -67,6 +87,13 @@
   --color-action-ghost-text: var(--color-base-ink);
   --color-action-ghost-border: color-mix(in srgb, var(--color-base-ink) 24%, transparent);
   --color-focus-ring: var(--color-base-accent-strong);
+
+  --color-state-success-text: var(--color-base-success-light);
+  --color-state-success-bg: color-mix(in srgb, var(--color-base-success-light) 14%, transparent);
+  --color-state-warning-text: var(--color-base-warning-light);
+  --color-state-warning-bg: color-mix(in srgb, var(--color-base-sand-light) 70%, transparent);
+  --color-state-danger-text: var(--color-base-danger-light);
+  --color-state-danger-bg: color-mix(in srgb, var(--color-base-accent) 14%, transparent);
 
   --font-body: var(--font-family-sans);
   --font-display-accent: var(--font-family-serif);
@@ -93,6 +120,7 @@
 [data-theme="dark"] {
   --color-bg-canvas: var(--color-base-paper-dark);
   --color-bg-surface: var(--color-base-surface-dark);
+  --color-bg-raised: var(--color-base-raised-dark);
   --color-bg-sunken: var(--color-base-sand-dark);
   --color-text-primary: var(--color-base-ink-light);
   --color-text-secondary: color-mix(in srgb, var(--color-base-ink-light) 72%, transparent);
@@ -106,6 +134,13 @@
   --color-action-ghost-text: var(--color-base-ink-light);
   --color-action-ghost-border: color-mix(in srgb, var(--color-base-ink-light) 28%, transparent);
   --color-focus-ring: var(--color-base-accent);
+
+  --color-state-success-text: var(--color-base-success-dark);
+  --color-state-success-bg: color-mix(in srgb, var(--color-base-success-dark) 16%, transparent);
+  --color-state-warning-text: var(--color-base-warning-dark);
+  --color-state-warning-bg: color-mix(in srgb, var(--color-base-warning-dark) 16%, transparent);
+  --color-state-danger-text: var(--color-base-danger-dark);
+  --color-state-danger-bg: color-mix(in srgb, var(--color-base-accent) 22%, transparent);
 
   --font-body: var(--font-family-sans);
   --font-display-accent: var(--font-family-serif);
@@ -155,6 +190,21 @@
   --kicker-font-size: var(--font-kicker-size);
   --media-bg: var(--color-bg-sunken);
   --media-radius: var(--radius-media);
+  /* Large panels (comparison cards, feature cards) round harder than a plain
+     card, and soften one step down on narrow screens. */
+  --panel-radius: var(--radius-xl);
+  --panel-radius-compact: var(--radius-lg);
+  --meter-track-bg: color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+  --meter-height: 0.5rem;
+  --meter-radius: var(--radius-full);
+  --option-bg: var(--color-bg-raised);
+  --option-bg-selected: var(--color-base-selected);
+  --option-text-selected: var(--color-base-ink);
+  --option-radio-selected: var(--color-base-selected-ink);
+  --option-radius: var(--radius-card);
+  --option-padding-block: 1.125rem;
+  --option-padding-inline: var(--space-5);
+  --radio-size: var(--size-dot);
   --theme-toggle-bg: var(--color-action-ghost-bg);
   --theme-toggle-text: var(--color-action-ghost-text);
   --theme-toggle-border: var(--color-action-ghost-border);
